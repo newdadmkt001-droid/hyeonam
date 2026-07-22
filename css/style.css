@@ -2310,10 +2310,10 @@ body.cmodal-open { overflow: hidden; }
   /* 커진 제목이 잘리지 않도록 줄바꿈 허용(클리핑·슬라이드 해제) */
   .hero__title .line { overflow: visible; }
   .hero__title .line__in { transform: none; transition: none; }
-  .hero__sub { font-size: clamp(19px, 5.3vw, 24px); }
+  .hero__sub { font-size: clamp(19px, 5.3vw, 24px); line-height: 1.32; }
   .hero__badges {
     display: grid; grid-template-columns: 1fr 1fr; gap: 0;
-    max-width: none; width: 100%; margin: 0 auto; padding: 6px 6px;
+    max-width: none; width: 100%; margin: 34px auto 0; padding: 6px 6px;
   }
   .hero__badges li {
     font-size: clamp(10px, 3.3vw, 16px); padding: 13px 4px; gap: 5px;
