@@ -45,14 +45,31 @@ function trafficSource() {
   }
 }
 
-// 최초 진입 시점의 유입경로를 세션에 저장(이후 페이지 이동해도 유지)
+// 최초 진입한 페이지(랜딩) 판별
+function landingPage() {
+  try {
+    const path = decodeURIComponent(location.pathname);
+    if (path.includes('카페')) return '카페';
+    if (path.includes('블로그')) return '블로그';
+    if (path === '/' || path === '' || path.includes('index')) return '메인';
+    return path;
+  } catch (e) { return '메인'; }
+}
+
+// 최초 진입 시점의 유입경로 + 유입페이지를 세션에 저장(이후 이동해도 유지)
 function captureSource() {
   try {
-    if (!sessionStorage.getItem('hy_src')) sessionStorage.setItem('hy_src', trafficSource());
+    if (!sessionStorage.getItem('hy_src')) {
+      sessionStorage.setItem('hy_src', trafficSource());
+      sessionStorage.setItem('hy_land', landingPage());
+    }
   } catch (e) {}
 }
 function storedSource() {
   try { return sessionStorage.getItem('hy_src') || trafficSource(); } catch (e) { return trafficSource(); }
+}
+function storedLanding() {
+  try { return sessionStorage.getItem('hy_land') || landingPage(); } catch (e) { return landingPage(); }
 }
 
 // 구글 시트로 전송 (미설정 시 스킵 → 데모 동작)
@@ -512,7 +529,7 @@ function initForm() {
            body: JSON.stringify(data),
          });
       */
-      const payload = { ...data, source: storedSource(), page: '메인 상담폼' };
+      const payload = { ...data, source: storedSource(), landing: storedLanding(), page: '메인 상담폼' };
       console.log('[현암] 상담신청', payload);
       await sendToSheet(payload);
       if (!SHEET_ENDPOINT) await new Promise((r) => setTimeout(r, 500)); // 미설정 시 데모 지연
@@ -594,7 +611,7 @@ function initModal() {
     btn.disabled = true; btn.style.opacity = '.6';
     if (result) result.textContent = '접수 중입니다...';
     try {
-      const payload = { ...Object.fromEntries(new FormData(form).entries()), source: storedSource(), page: '빠른 상담 팝업' };
+      const payload = { ...Object.fromEntries(new FormData(form).entries()), source: storedSource(), landing: storedLanding(), page: '빠른 상담 팝업' };
       console.log('[현암] 팝업 상담신청', payload);
       await sendToSheet(payload);
       if (!SHEET_ENDPOINT) await new Promise((r) => setTimeout(r, 500));
