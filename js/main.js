@@ -585,6 +585,32 @@ function initHeroVideo() {
 }
 
 /* =========================================================
+   8.7 모바일 스크롤 중 오클릭 방지 (신청현황·성공사례)
+   ========================================================= */
+function initScrollGuard() {
+  let sx = 0, sy = 0, moved = false;
+  const TH = 10; // 이동 임계값(px) — 이보다 크게 움직이면 스크롤로 간주
+
+  document.addEventListener('touchstart', (e) => {
+    const t = e.touches[0];
+    sx = t.clientX; sy = t.clientY; moved = false;
+  }, { passive: true });
+
+  document.addEventListener('touchmove', (e) => {
+    const t = e.touches[0];
+    if (Math.abs(t.clientX - sx) > TH || Math.abs(t.clientY - sy) > TH) moved = true;
+  }, { passive: true });
+
+  // 스크롤 제스처였다면 피드/성공사례 영역의 클릭을 취소
+  document.addEventListener('click', (e) => {
+    if (moved && e.target.closest('.feed, .cases')) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, true);
+}
+
+/* =========================================================
    9. Misc — 연도 자동 갱신
    ========================================================= */
 function initMisc() {
@@ -606,6 +632,7 @@ function boot() {
   initForm();
   initModal();
   initHeroVideo();
+  initScrollGuard();
   initMisc();
 }
 

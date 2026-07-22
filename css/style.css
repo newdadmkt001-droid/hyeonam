@@ -1422,16 +1422,17 @@ summary::-webkit-details-marker { display: none; }
 }
 /* 화면 진입 시 도장 찍히는 효과 (땅땅땅땅) */
 .case.is-in .case__stamp {
-  animation: stampDown .5s cubic-bezier(.2, .7, .3, 1.35) forwards;
+  animation: stampDown .48s cubic-bezier(.18, .74, .3, 1.5) forwards;
 }
-.case:nth-child(1).is-in .case__stamp { animation-delay: .30s; }
-.case:nth-child(2).is-in .case__stamp { animation-delay: .48s; }
-.case:nth-child(3).is-in .case__stamp { animation-delay: .66s; }
-.case:nth-child(4).is-in .case__stamp { animation-delay: .84s; }
+.case:nth-child(1).is-in .case__stamp { animation-delay: .25s; }
+.case:nth-child(2).is-in .case__stamp { animation-delay: .43s; }
+.case:nth-child(3).is-in .case__stamp { animation-delay: .61s; }
+.case:nth-child(4).is-in .case__stamp { animation-delay: .79s; }
 @keyframes stampDown {
-  0%   { opacity: 0; transform: rotate(-6deg) scale(1.7); }
-  55%  { opacity: 1; transform: rotate(-6deg) scale(.9); }
-  78%  { opacity: 1; transform: rotate(-6deg) scale(1.05); }
+  0%   { opacity: 0; transform: rotate(-15deg) scale(2.1); }
+  45%  { opacity: 1; transform: rotate(-6deg) scale(.84); }   /* 쾅! 임팩트 */
+  65%  { transform: rotate(-6deg) scale(1.09); }
+  82%  { transform: rotate(-6deg) scale(.96); }
   100% { opacity: 1; transform: rotate(-6deg) scale(1); }
 }
 .case:hover .case__stamp { transform: rotate(-6deg) scale(1.05) !important; }
@@ -2261,9 +2262,9 @@ body.cmodal-open { overflow: hidden; }
   /* 고민 체크리스트 카드 높이 축소 */
   .worry-card__link { height: clamp(190px, 46vw, 240px); }
 
-  /* 소개 헤드라인: 3줄 유지, 폰트만 축소해 좌측(밝은 영역)에 유지 */
-  .about__headline { font-size: clamp(16px, 4.6vw, 22px); line-height: 1.55; }
-  .about__text { padding-left: 22px; padding-right: 22px; }
+  /* 소개 헤드라인: 모바일에서 크게 (가운데 정렬·도형 숨김이라 겹침 없음) */
+  .about__headline { font-size: clamp(20px, 5.4vw, 25px); line-height: 1.5; }
+  .about__text { padding-left: 16px; padding-right: 16px; }
 
   /* 골든타임 라벨 */
   .timing__label { font-size: clamp(20px, 5.4vw, 26px); }
