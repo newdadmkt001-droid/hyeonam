@@ -14,7 +14,7 @@ const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').mat
    상담 접수 → 구글 시트 연동 + 유입경로 수집
    ========================================================= */
 // Google Apps Script 웹앱 URL (배포 후 아래에 붙여넣기)
-const SHEET_ENDPOINT = '';
+const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzAHRYh8v5zY3_oDVPVPkOY-p4ihum0z57jl9gcVcH0shl5wb_BlB5QWcQ-yQcGhmj1zg/exec';
 
 // 유입경로 판별 (UTM 우선, 없으면 referrer 도메인)
 function trafficSource() {
