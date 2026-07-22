@@ -20,9 +20,9 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzAHRYh8v5zY3_oD
 function trafficSource() {
   try {
     // 전용 랜딩 서브페이지(/카페, /블로그) 우선 판별
-    const path = decodeURIComponent(location.pathname);
-    if (path.includes('카페')) return '네이버 카페';
-    if (path.includes('블로그')) return '네이버 블로그';
+    const path = decodeURIComponent(location.pathname).toLowerCase();
+    if (path.includes('카페') || path.includes('cafe')) return '네이버 카페';
+    if (path.includes('블로그') || path.includes('blog')) return '네이버 블로그';
 
     const p = new URLSearchParams(location.search);
     const utm = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']
@@ -48,9 +48,9 @@ function trafficSource() {
 // 최초 진입한 페이지(랜딩) 판별
 function landingPage() {
   try {
-    const path = decodeURIComponent(location.pathname);
-    if (path.includes('카페')) return '카페';
-    if (path.includes('블로그')) return '블로그';
+    const path = decodeURIComponent(location.pathname).toLowerCase();
+    if (path.includes('카페') || path.includes('cafe')) return '카페';
+    if (path.includes('블로그') || path.includes('blog')) return '블로그';
     if (path === '/' || path === '' || path.includes('index')) return '메인';
     return path;
   } catch (e) { return '메인'; }
