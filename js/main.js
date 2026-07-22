@@ -81,6 +81,44 @@ async function sendToSheet(data) {
 }
 
 /* =========================================================
+   접수 완료 팝업 (성공 시 화면 중앙에 표시)
+   ========================================================= */
+function showSuccessPopup(desc) {
+  document.querySelector('.spop')?.remove();
+
+  const pop = document.createElement('div');
+  pop.className = 'spop';
+  pop.innerHTML =
+    '<div class="spop__overlay" data-spop-close></div>' +
+    '<div class="spop__card" role="dialog" aria-modal="true" aria-label="접수 완료">' +
+      '<div class="spop__icon" aria-hidden="true">' +
+        '<svg viewBox="0 0 40 40" fill="none">' +
+          '<path class="spop__check" d="M11 20 l6 6 l12 -13" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>' +
+        '</svg>' +
+      '</div>' +
+      '<p class="spop__title">상담 신청이 접수되었습니다</p>' +
+      '<p class="spop__desc">' + (desc || '담당 변호사가 곧 연락드리겠습니다.') + '</p>' +
+      '<button type="button" class="spop__btn" data-spop-close>확인</button>' +
+    '</div>';
+
+  document.body.appendChild(pop);
+  document.body.classList.add('cmodal-open');
+  requestAnimationFrame(() => pop.classList.add('is-open'));
+
+  const close = () => {
+    pop.classList.remove('is-open');
+    document.body.classList.remove('cmodal-open');
+    setTimeout(() => pop.remove(), 280);
+    document.removeEventListener('keydown', onKey);
+  };
+  const onKey = (e) => { if (e.key === 'Escape') close(); };
+
+  pop.querySelectorAll('[data-spop-close]').forEach((el) => el.addEventListener('click', close));
+  document.addEventListener('keydown', onKey);
+  setTimeout(() => pop.querySelector('.spop__btn')?.focus(), 80);
+}
+
+/* =========================================================
    1. Reveal — 스크롤 진입 시 Fade Up
    ========================================================= */
 function initReveal() {
@@ -534,8 +572,9 @@ function initForm() {
       await sendToSheet(payload);
       if (!SHEET_ENDPOINT) await new Promise((r) => setTimeout(r, 500)); // 미설정 시 데모 지연
 
-      if (result) result.textContent = '상담 신청이 접수되었습니다. 담당 변호사가 곧 연락드리겠습니다.';
+      if (result) result.textContent = '';
       form.reset();
+      showSuccessPopup('담당 변호사가 곧 연락드리겠습니다.');
     } catch (err) {
       console.error(err);
       if (result) {
@@ -615,8 +654,10 @@ function initModal() {
       console.log('[현암] 팝업 상담신청', payload);
       await sendToSheet(payload);
       if (!SHEET_ENDPOINT) await new Promise((r) => setTimeout(r, 500));
-      if (result) result.textContent = '상담 신청이 접수되었습니다. 담당 변호사가 곧 연락드리겠습니다.';
+      if (result) result.textContent = '';
       form.reset();
+      close();
+      showSuccessPopup('담당 변호사가 곧 연락드리겠습니다.');
     } catch (err) {
       if (result) { result.style.color = '#E2796A'; result.textContent = '접수 중 오류가 발생했습니다. 대표번호로 연락 부탁드립니다.'; }
     } finally {

@@ -2109,6 +2109,30 @@ summary::-webkit-details-marker { display: none; }
 .cmodal__form { display: grid; gap: 16px; }
 body.cmodal-open { overflow: hidden; }
 
+/* ===== 접수 완료 팝업 ===== */
+.spop { position: fixed; inset: 0; z-index: 300; display: grid; place-items: center; padding: 24px;
+  opacity: 0; visibility: hidden; transition: opacity .26s var(--ease-out), visibility .26s var(--ease-out); }
+.spop.is-open { opacity: 1; visibility: visible; }
+.spop__overlay { position: absolute; inset: 0; background: rgba(8,20,16,.62);
+  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+.spop__card { position: relative; z-index: 1; width: 100%; max-width: 360px;
+  background: #fff; border-radius: var(--radius-lg); padding: 40px 30px 30px; text-align: center;
+  box-shadow: 0 30px 80px -20px rgba(0,0,0,.55);
+  transform: translateY(16px) scale(.97); transition: transform .32s var(--ease-out); }
+.spop.is-open .spop__card { transform: none; }
+.spop__icon { width: 68px; height: 68px; margin: 0 auto 18px; border-radius: 50%;
+  display: grid; place-items: center; background: var(--grad); color: #fff; }
+.spop__icon svg { width: 34px; height: 34px; }
+.spop__check { stroke-dasharray: 34; stroke-dashoffset: 34; }
+.spop.is-open .spop__check { animation: spopCheck .5s .18s var(--ease-out) forwards; }
+@keyframes spopCheck { to { stroke-dashoffset: 0; } }
+.spop__title { font-size: 20px; font-weight: 800; letter-spacing: -.02em; color: var(--text); margin: 0 0 8px; }
+.spop__desc { font-size: 15px; line-height: 1.6; color: var(--text-2); margin: 0 0 26px; }
+.spop__btn { width: 100%; padding: 15px; border: 0; border-radius: 12px;
+  background: var(--grad); color: #fff; font-size: 16px; font-weight: 700; cursor: pointer;
+  transition: opacity .2s var(--ease); }
+.spop__btn:hover { opacity: .92; }
+
 /* To top */
 .to-top {
   position: fixed; right: 24px; bottom: 24px; z-index: 88;
