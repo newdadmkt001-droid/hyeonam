@@ -529,7 +529,7 @@ function initForm() {
            body: JSON.stringify(data),
          });
       */
-      const payload = { ...data, source: storedSource(), landing: storedLanding(), page: '메인 상담폼' };
+      const payload = { ...data, landing: storedLanding() };
       console.log('[현암] 상담신청', payload);
       await sendToSheet(payload);
       if (!SHEET_ENDPOINT) await new Promise((r) => setTimeout(r, 500)); // 미설정 시 데모 지연
@@ -611,7 +611,7 @@ function initModal() {
     btn.disabled = true; btn.style.opacity = '.6';
     if (result) result.textContent = '접수 중입니다...';
     try {
-      const payload = { ...Object.fromEntries(new FormData(form).entries()), source: storedSource(), landing: storedLanding(), page: '빠른 상담 팝업' };
+      const payload = { ...Object.fromEntries(new FormData(form).entries()), landing: storedLanding() };
       console.log('[현암] 팝업 상담신청', payload);
       await sendToSheet(payload);
       if (!SHEET_ENDPOINT) await new Promise((r) => setTimeout(r, 500));
