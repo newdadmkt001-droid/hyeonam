@@ -2195,6 +2195,9 @@ body.cmodal-open { overflow: hidden; }
   /* 제목·설명 ↔ 아래 내용 간격 축소 */
   .sec-head { margin-bottom: clamp(24px, 5vw, 32px); }
   .consult__head { margin-bottom: clamp(24px, 5vw, 32px); }
+  /* "왜 현암이어야 할까요?" 섹션은 위아래 여백 더 확보 */
+  .diff__intro { padding-top: clamp(64px, 15vw, 92px); }
+  .diff-grid { padding-bottom: clamp(64px, 15vw, 92px); }
   /* FAQ 제목 주변 여백 축소 */
   .faq .sec-label { margin-bottom: 8px; }
   .faq .sec-head { margin-bottom: clamp(20px, 4vw, 30px); }
