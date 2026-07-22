@@ -11,6 +11,54 @@ const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* =========================================================
+   상담 접수 → 구글 시트 연동 + 유입경로 수집
+   ========================================================= */
+// Google Apps Script 웹앱 URL (배포 후 아래에 붙여넣기)
+const SHEET_ENDPOINT = '';
+
+// 유입경로 판별 (UTM 우선, 없으면 referrer 도메인)
+function trafficSource() {
+  try {
+    const p = new URLSearchParams(location.search);
+    const utm = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']
+      .map((k) => p.get(k)).filter(Boolean).join(' / ');
+    if (utm) return utm;
+    const ref = document.referrer;
+    if (!ref) return '직접 유입';
+    const h = new URL(ref).hostname.replace(/^www\./, '');
+    if (h.includes('google')) return '구글';
+    if (h.includes('naver')) return '네이버';
+    if (h.includes('daum') || h.includes('kakao')) return '다음/카카오';
+    if (h.includes('instagram')) return '인스타그램';
+    if (h.includes('facebook') || h.includes('fb.')) return '페이스북';
+    if (h.includes('youtube')) return '유튜브';
+    if (h.includes('bing')) return '빙';
+    if (h.includes('hyeonam.com')) return '사이트 내부';
+    return h;
+  } catch (e) {
+    return '알 수 없음';
+  }
+}
+
+// 최초 진입 시점의 유입경로를 세션에 저장(이후 페이지 이동해도 유지)
+function captureSource() {
+  try {
+    if (!sessionStorage.getItem('hy_src')) sessionStorage.setItem('hy_src', trafficSource());
+  } catch (e) {}
+}
+function storedSource() {
+  try { return sessionStorage.getItem('hy_src') || trafficSource(); } catch (e) { return trafficSource(); }
+}
+
+// 구글 시트로 전송 (미설정 시 스킵 → 데모 동작)
+async function sendToSheet(data) {
+  if (!SHEET_ENDPOINT) return;
+  try {
+    await fetch(SHEET_ENDPOINT, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(data) });
+  } catch (e) { /* no-cors: 응답 못 읽어도 접수는 처리됨 */ }
+}
+
+/* =========================================================
    1. Reveal — 스크롤 진입 시 Fade Up
    ========================================================= */
 function initReveal() {
@@ -459,8 +507,10 @@ function initForm() {
            body: JSON.stringify(data),
          });
       */
-      console.log('[현암] 상담신청 데이터', data);
-      await new Promise((r) => setTimeout(r, 700)); // 데모용 지연
+      const payload = { ...data, source: storedSource(), page: '메인 상담폼' };
+      console.log('[현암] 상담신청', payload);
+      await sendToSheet(payload);
+      if (!SHEET_ENDPOINT) await new Promise((r) => setTimeout(r, 500)); // 미설정 시 데모 지연
 
       if (result) result.textContent = '상담 신청이 접수되었습니다. 담당 변호사가 곧 연락드리겠습니다.';
       form.reset();
@@ -539,8 +589,10 @@ function initModal() {
     btn.disabled = true; btn.style.opacity = '.6';
     if (result) result.textContent = '접수 중입니다...';
     try {
-      console.log('[현암] 팝업 상담신청', Object.fromEntries(new FormData(form).entries()));
-      await new Promise((r) => setTimeout(r, 700));
+      const payload = { ...Object.fromEntries(new FormData(form).entries()), source: storedSource(), page: '빠른 상담 팝업' };
+      console.log('[현암] 팝업 상담신청', payload);
+      await sendToSheet(payload);
+      if (!SHEET_ENDPOINT) await new Promise((r) => setTimeout(r, 500));
       if (result) result.textContent = '상담 신청이 접수되었습니다. 담당 변호사가 곧 연락드리겠습니다.';
       form.reset();
     } catch (err) {
@@ -622,6 +674,7 @@ function initMisc() {
    Boot
    ========================================================= */
 function boot() {
+  captureSource();
   initHeroSlider();
   initHeader();
   initReveal();
