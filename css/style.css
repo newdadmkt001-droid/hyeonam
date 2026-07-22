@@ -2192,6 +2192,9 @@ body.cmodal-open { overflow: hidden; }
   .sec-title { font-size: clamp(27px, 7.6vw, 34px); line-height: 1.28; font-weight: 800; }
   .contact__title, .location__title, .cmodal__title { font-size: clamp(27px, 7.6vw, 34px); }
   .sec-desc, .contact__desc, .consult__head .sec-desc { font-size: 17px; line-height: 1.7; }
+  /* FAQ 제목 주변 여백 축소 */
+  .faq .sec-label { margin-bottom: 8px; }
+  .faq .sec-head { margin-bottom: clamp(20px, 4vw, 30px); }
 
   .hero { height: auto; min-height: 0; }
   .hero__frame { height: auto; min-height: auto; padding: clamp(72px, 16vw, 104px) 0; border-radius: 16px; }
