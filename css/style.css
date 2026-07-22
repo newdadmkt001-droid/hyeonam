@@ -2035,8 +2035,7 @@ summary::-webkit-details-marker { display: none; }
 /* FAB (mobile only) */
 .fab {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 90;
-  display: none; gap: 1px;
-  background: var(--line);
+  display: none; gap: 0;                 /* 버튼 사이 틈 제거 */
   border-top: 1px solid var(--line);
   transform: translateY(100%);
   transition: transform .45s var(--ease);
@@ -2046,7 +2045,31 @@ summary::-webkit-details-marker { display: none; }
 .fab.is-show { transform: none; }
 .fab__item { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; height: 60px; font-size: 16.5px; font-weight: 600; }
 .fab__item--tel { background: #fff; color: var(--text-1); }
-.fab__item--form { background: var(--grad); color: #fff; flex: 1.4; }
+/* 무료 자격진단 신청 — 시선 끄는 효과 (은은한 밝기 펄스 + 광택 스윕) */
+.fab__item--form {
+  background: var(--grad); color: #fff; flex: 1.4;
+  position: relative; overflow: hidden;
+  animation: fabPulse 2.2s ease-in-out infinite;
+}
+.fab__item--form > * { position: relative; z-index: 1; }
+.fab__item--form::after {
+  content: ""; position: absolute; top: 0; bottom: 0; left: -70%;
+  width: 55%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.4), transparent);
+  transform: skewX(-18deg); pointer-events: none;
+  animation: fabShine 3s ease-in-out infinite;
+}
+@keyframes fabPulse {
+  0%, 100% { filter: brightness(1); }
+  50%      { filter: brightness(1.16); }
+}
+@keyframes fabShine {
+  0%        { left: -70%; }
+  60%, 100% { left: 130%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fab__item--form { animation: none; }
+  .fab__item--form::after { display: none; }
+}
 
 /* ===== 빠른 상담신청 팝업 ===== */
 .cmodal { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 20px; }
