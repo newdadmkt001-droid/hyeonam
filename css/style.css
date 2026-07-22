@@ -2054,7 +2054,7 @@ summary::-webkit-details-marker { display: none; }
 .fab__item--tel { background: #fff; color: var(--text-1); }
 /* 무료 자격진단 신청 — 시선 끄는 효과 (은은한 밝기 펄스 + 광택 스윕) */
 .fab__item--form {
-  background: var(--grad); color: #fff; flex: 1.4;
+  background: linear-gradient(135deg, #EE3B2E 0%, #CC1B12 100%); color: #fff; flex: 1.4;
   position: relative; overflow: hidden;
   animation: fabPulse 2.2s ease-in-out infinite;
 }
