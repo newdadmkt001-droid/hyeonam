@@ -2242,7 +2242,8 @@ body.cmodal-open { overflow: hidden; }
   /* 카드 높이 전부 동일(가장 긴 카드 기준) */
   .case-track { align-items: stretch; }
   .case { flex: none; display: flex; }
-  .case__inner { height: auto; flex: 1; }
+  .case__inner { height: auto; flex: 1; padding: 22px 22px 26px; text-align: left; }
+  .case__foot, .case__type, .case__result, .case__desc { text-align: left; }
   /* 인물 이미지 세로 확대(전 카드 동일) + 도장 크기 통일 */
   .case__media { flex: none; aspect-ratio: 4 / 4.2; margin: 14px 0 16px; }
   .case__stamp { padding: 7px 14px; border-width: 2px; }
