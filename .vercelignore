@@ -1,0 +1,21 @@
+# 사이트가 참조하지 않는 원본/대용량 파일 — 배포 제외
+# (실제 사용 이미지는 assets/img, 영상은 assets/video 에 있음)
+/메인.mov
+/상담.jpg
+/급여.jpg
+/신용.jpg
+/재산.jpg
+/통장.jpg
+/자격증.jpg
+/사람1.png
+/사람2.png
+/사람3.png
+/사람4.png
+/변호사.png
+/로고.png
+/지도.png
+/지도 (1).png
+
+# 개발/시스템 파일
+.DS_Store
+__*.html

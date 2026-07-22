@@ -1,0 +1,20 @@
+.DS_Store
+__*.html
+
+# 대용량/원본 파일 (사이트 미사용) — 저장소·배포 제외
+# GitHub 100MB 제한 회피 (메인.mov 510MB 등)
+/메인.mov
+/상담.jpg
+/급여.jpg
+/신용.jpg
+/재산.jpg
+/통장.jpg
+/자격증.jpg
+/사람1.png
+/사람2.png
+/사람3.png
+/사람4.png
+/변호사.png
+/로고.png
+/지도.png
+/지도 (1).png
