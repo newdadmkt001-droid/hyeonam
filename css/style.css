@@ -2197,7 +2197,10 @@ body.cmodal-open { overflow: hidden; }
   .faq .sec-head { margin-bottom: clamp(20px, 4vw, 30px); }
 
   .hero { height: auto; min-height: 0; }
-  .hero__frame { height: auto; min-height: auto; padding: clamp(72px, 16vw, 104px) 0; border-radius: 16px; }
+  /* 세로 축소 + 하단 FAB 겹침 방지(콘텐츠 위로) */
+  .hero__frame { height: auto; min-height: auto; padding: clamp(28px, 7vw, 46px) 0 clamp(94px, 21vw, 118px); border-radius: 16px; }
+  .hero__slider { margin-bottom: 14px; }
+  .hero__logo { margin-bottom: clamp(12px, 2vw, 18px); }
   /* 영상 위 어두운 오버레이 강화 — 글자 가독성 */
   .hero__wash { background: linear-gradient(180deg, rgba(8,16,13,.68) 0%, rgba(8,16,13,.56) 42%, rgba(8,16,13,.74) 100%); }
   /* 메인 콘텐츠 (로고 제외 전체 확대) */
