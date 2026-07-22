@@ -2290,8 +2290,8 @@ body.cmodal-open { overflow: hidden; }
   .location__phone-num { font-size: 30px; }
   .location__marquee-track span { font-size: 44px; }
 
-  /* 성공사례 헤드 여백 */
-  .cases__head { padding-inline: 4px; }
+  /* 성공사례 헤드: 컨테이너 기본 좌우 여백 유지(왼쪽 붙음 방지) */
+  .cases__head { padding-inline: var(--gutter); }
 }
 
 /* ---------- 터치 기기: 스크롤 중 호버로 '선택된 것처럼' 보이는 효과 제거 ---------- */
