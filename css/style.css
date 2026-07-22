@@ -2264,7 +2264,7 @@ body.cmodal-open { overflow: hidden; }
   .footer__bottom { justify-content: center; text-align: center; }
 
   .fab { display: flex; }
-  .to-top { bottom: 78px; right: 16px; width: 42px; height: 42px; }
+  .to-top { display: none !important; }   /* 하단 FAB와 겹쳐서 모바일에선 숨김 */
   .footer { padding-bottom: 60px; }
 }
 
@@ -2303,6 +2303,23 @@ body.cmodal-open { overflow: hidden; }
   .diff-card:hover { transform: none; }
   .footer__map:hover, .location__map:hover { border-color: var(--line); }
   .feed__item:hover { background: transparent; }
+}
+
+/* ---------- 모바일: 상담 팝업 한 화면에 담기(콤팩트) ---------- */
+@media (max-width: 720px) {
+  .cmodal { padding: 10px; }
+  .cmodal__card { padding: 20px 18px; max-height: 94vh; border-radius: 16px; }
+  .cmodal__eyebrow { font-size: 12px; }
+  .cmodal__title { font-size: 23px; margin: 5px 0 6px; }
+  .cmodal__desc { font-size: 13px; line-height: 1.45; margin-bottom: 13px; }
+  .cmodal__form { gap: 10px; }
+  .cmodal__form .field { gap: 5px; }
+  .cmodal__form .field label { font-size: 12.5px; }
+  .cmodal__form .field input,
+  .cmodal__form .field select { padding: 10px 12px; font-size: 14px; }
+  .cmodal__form .field--check label { font-size: 12px; }
+  .cmodal__form .btn--lg { padding-block: 13px; font-size: 15px; }
+  .cmodal__form .form__result { font-size: 12.5px; }
 }
 
 /* ---------- Accessibility: reduced motion ---------- */
