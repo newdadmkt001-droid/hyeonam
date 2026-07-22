@@ -498,6 +498,113 @@ function initQuickBar() {
 }
 
 /* =========================================================
+   7.5 커스텀 드롭다운 — iOS 네이티브 select 대체
+   네이티브 <select>는 폼 전송·검증용으로 유지하고 화면만 교체한다.
+   (칸 너비에 맞춰 바로 아래로 펼쳐지고, 공간 부족 시 위로 펼침)
+   ========================================================= */
+function enhanceSelect(sel) {
+  if (sel.dataset.enhanced) return;
+  sel.dataset.enhanced = '1';
+
+  const wrap = document.createElement('div');
+  wrap.className = 'cselect';
+  sel.parentNode.insertBefore(wrap, sel);
+  wrap.appendChild(sel);
+  sel.classList.add('cselect__native');
+  sel.tabIndex = -1;
+
+  const trigger = document.createElement('button');
+  trigger.type = 'button';
+  trigger.className = 'cselect__trigger';
+  trigger.setAttribute('aria-haspopup', 'listbox');
+  trigger.setAttribute('aria-expanded', 'false');
+  trigger.innerHTML = '<span class="cselect__label"></span><span class="cselect__arrow" aria-hidden="true"></span>';
+  wrap.appendChild(trigger);
+
+  const label = trigger.querySelector('.cselect__label');
+  const options = Array.from(sel.options);
+
+  const syncLabel = () => {
+    const opt = sel.options[sel.selectedIndex];
+    label.textContent = opt ? opt.textContent : '';
+    trigger.classList.toggle('is-placeholder', !opt || opt.value === '');
+  };
+  syncLabel();
+
+  let panel = null;
+
+  const reposition = () => {
+    if (!panel) return;
+    const r = trigger.getBoundingClientRect();
+    const h = panel.offsetHeight;
+    const below = window.innerHeight - r.bottom;
+    let top = r.bottom + 6;
+    if (below < h + 16 && r.top > h + 16) top = r.top - h - 6;
+    panel.style.left = Math.round(r.left) + 'px';
+    panel.style.top = Math.round(top) + 'px';
+    panel.style.width = Math.round(r.width) + 'px';
+  };
+
+  const onDoc = (e) => {
+    if (panel && !panel.contains(e.target) && !trigger.contains(e.target)) close();
+  };
+  const onKey = (e) => { if (e.key === 'Escape') { close(); trigger.focus(); } };
+  const onScroll = (e) => { if (panel && panel.contains(e.target)) return; close(); };
+
+  function close() {
+    if (!panel) return;
+    panel.remove();
+    panel = null;
+    trigger.setAttribute('aria-expanded', 'false');
+    trigger.classList.remove('is-open');
+    document.removeEventListener('click', onDoc, true);
+    document.removeEventListener('keydown', onKey, true);
+    window.removeEventListener('resize', reposition);
+    window.removeEventListener('scroll', onScroll, true);
+  }
+
+  const open = () => {
+    if (panel) { close(); return; }
+    panel = document.createElement('div');
+    panel.className = 'cselect__panel';
+    panel.setAttribute('role', 'listbox');
+    options.forEach((opt, i) => {
+      const item = document.createElement('button');
+      item.type = 'button';
+      item.className = 'cselect__opt';
+      item.textContent = opt.textContent;
+      if (i === sel.selectedIndex) item.classList.add('is-sel');
+      if (opt.value === '') item.classList.add('is-placeholder');
+      item.addEventListener('click', () => {
+        sel.selectedIndex = i;
+        sel.dispatchEvent(new Event('change', { bubbles: true }));
+        syncLabel();
+        close();
+        trigger.focus();
+      });
+      panel.appendChild(item);
+    });
+    document.body.appendChild(panel);
+    trigger.setAttribute('aria-expanded', 'true');
+    trigger.classList.add('is-open');
+    reposition();
+    requestAnimationFrame(() => panel && panel.classList.add('is-in'));
+    document.addEventListener('click', onDoc, true);
+    document.addEventListener('keydown', onKey, true);
+    window.addEventListener('resize', reposition);
+    window.addEventListener('scroll', onScroll, true);
+  };
+
+  trigger.addEventListener('click', (e) => { e.preventDefault(); open(); });
+  sel.addEventListener('change', syncLabel);
+  sel.closest('form')?.addEventListener('reset', () => setTimeout(syncLabel, 0));
+}
+
+function initCustomSelect() {
+  $$('.field select').forEach(enhanceSelect);
+}
+
+/* =========================================================
    8. Contact Form — 검증 + 전화번호 자동 하이픈
    실제 전송은 handleSubmit 내부의 TODO 지점에 연동하세요.
    ========================================================= */
@@ -745,6 +852,7 @@ function boot() {
   initLiveFeed();
   initFaq();
   initQuickBar();
+  initCustomSelect();
   initForm();
   initModal();
   initHeroVideo();
