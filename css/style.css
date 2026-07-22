@@ -2196,15 +2196,18 @@ body.cmodal-open { overflow: hidden; }
   .hero__frame { height: auto; min-height: auto; padding: clamp(72px, 16vw, 104px) 0; border-radius: 16px; }
   /* 영상 위 어두운 오버레이 강화 — 글자 가독성 */
   .hero__wash { background: linear-gradient(180deg, rgba(8,16,13,.68) 0%, rgba(8,16,13,.56) 42%, rgba(8,16,13,.74) 100%); }
-  /* 메인 콘텐츠 */
+  /* 메인 콘텐츠 (로고 제외 전체 확대) */
   .hero__logo { width: clamp(88px, 10vw, 120px); }
-  .hero__title { font-size: clamp(28px, 7.4vw, 38px); margin-bottom: 10px; }
-  .hero__sub { font-size: clamp(18px, 4.8vw, 22px); }
+  .hero__title { font-size: clamp(30px, 8vw, 42px); margin-bottom: 12px; }
+  /* 커진 제목이 잘리지 않도록 줄바꿈 허용(클리핑·슬라이드 해제) */
+  .hero__title .line { overflow: visible; }
+  .hero__title .line__in { transform: none; transition: none; }
+  .hero__sub { font-size: clamp(19px, 5.3vw, 24px); }
   .hero__badges {
     flex-direction: column; align-items: stretch; gap: 0;
     max-width: none; width: fit-content; margin: 0 auto; padding: 4px 28px;
   }
-  .hero__badges li { font-size: 16px; padding: 14px 0; }
+  .hero__badges li { font-size: 17px; padding: 15px 0; }
   .hero__badges li + li { border-top: 1px solid rgba(255,255,255,.22); }
   .hero__scroll { display: none; }
   .header__cta .btn--ghost { display: none; }
