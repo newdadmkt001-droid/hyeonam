@@ -2222,6 +2222,7 @@ body.cmodal-open { overflow: hidden; }
   .sec-title { font-size: clamp(27px, 7.6vw, 34px); line-height: 1.28; font-weight: 800; }
   .contact__title, .location__title, .cmodal__title { font-size: clamp(27px, 7.6vw, 34px); }
   .sec-desc, .contact__desc, .consult__head .sec-desc { font-size: 17px; line-height: 1.7; }
+  #timing .sec-desc { font-size: 19.5px; }   /* "왜 지금 상담해야 하나요?" 조금 키움 */
   /* 제목·설명 ↔ 아래 내용 간격 축소 */
   .sec-head { margin-bottom: clamp(24px, 5vw, 32px); }
   .consult__head { margin-bottom: clamp(24px, 5vw, 32px); }
