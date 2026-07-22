@@ -2134,8 +2134,8 @@ body.cmodal-open { overflow: hidden; }
   .nav-toggle { display: flex; }
   .header, .header.is-stuck { height: 68px; }
 
-  /* 섹션 서브 문구: 모바일에선 제목보다 작게 */
-  .sec-desc { font-size: 17px; line-height: 1.7; margin-top: 14px; }
+  /* 섹션 서브 문구: 모바일에선 제목보다 작게 (diff 설명도 동일하게) */
+  .sec-desc, .diff__desc { font-size: 17px; line-height: 1.7; margin-top: 14px; }
 
   /* 소개(about) — 내용/인물 가운데 정렬, 도형 정리 */
   .about__card {
