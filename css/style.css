@@ -2194,6 +2194,8 @@ body.cmodal-open { overflow: hidden; }
 
   .hero { height: auto; min-height: 0; }
   .hero__frame { height: auto; min-height: auto; padding: clamp(72px, 16vw, 104px) 0; border-radius: 16px; }
+  /* 영상 위 어두운 오버레이 강화 — 글자 가독성 */
+  .hero__wash { background: linear-gradient(180deg, rgba(8,16,13,.68) 0%, rgba(8,16,13,.56) 42%, rgba(8,16,13,.74) 100%); }
   /* 메인 콘텐츠 */
   .hero__logo { width: clamp(88px, 10vw, 120px); }
   .hero__title { font-size: clamp(28px, 7.4vw, 38px); margin-bottom: 10px; }
