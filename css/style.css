@@ -625,7 +625,7 @@ summary::-webkit-details-marker { display: none; }
   padding: 6px 2px;
   border: 0; border-bottom: 1px solid transparent;
   background: transparent;
-  font-size: 14px; color: var(--text-1);
+  font-size: 16px; color: var(--text-1); /* iOS 자동확대 방지 */
   transition: border-color .3s var(--ease);
 }
 .quickbar select {
@@ -1714,7 +1714,7 @@ summary::-webkit-details-marker { display: none; }
   background: var(--input-bg);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  font-size: 15px;
+  font-size: 16px; /* iOS 포커스 시 자동 확대 방지 (16px 미만이면 확대됨) */
   color: var(--text-1);
   transition: border-color .35s var(--ease), background-color .35s var(--ease),
               box-shadow .35s var(--ease);
@@ -2380,7 +2380,7 @@ body.cmodal-open { overflow: hidden; }
   .cmodal__form .field { gap: 5px; }
   .cmodal__form .field label { font-size: 12.5px; }
   .cmodal__form .field input,
-  .cmodal__form .field select { padding: 10px 12px; font-size: 14px; }
+  .cmodal__form .field select { padding: 10px 12px; font-size: 16px; } /* iOS 자동확대 방지 */
   .cmodal__form .field--check label { font-size: 12px; }
   .cmodal__form .btn--lg { padding-block: 13px; font-size: 15px; }
   .cmodal__form .form__result { font-size: 12.5px; }
