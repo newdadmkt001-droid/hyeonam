@@ -2180,7 +2180,7 @@ body.cmodal-open { overflow: hidden; }
 }
 
 @media (max-width: 720px) {
-  :root { --gutter: 20px; }
+  :root { --gutter: 20px; --sec-pad: clamp(44px, 9vw, 76px); }   /* 모바일 섹션 상하 여백 절반 */
   body { font-size: 15px; }
 
   /* ── 모바일 타이포 위계: 상단 영어 라벨(작게) · 메인 제목(크게) · 서브(중간) ── */
