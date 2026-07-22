@@ -167,6 +167,13 @@ h1, h2, h3, h4, p, figure, blockquote, dl, dd { margin: 0; }
 ul, ol { margin: 0; padding: 0; list-style: none; }
 img, svg { max-width: 100%; display: block; }
 img { height: auto; }
+
+/* ── 모든 해상도 가로 오버플로우/잘림 방지 ── */
+video, iframe, table { max-width: 100%; }
+/* flex·grid 자식이 콘텐츠 최소폭 때문에 넘치지 않도록 (좁은 폰 대비) */
+*, *::before, *::after { min-width: 0; }
+/* 이메일·URL 등 공백 없는 긴 문자열도 줄바꿈 */
+body { overflow-wrap: break-word; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
 input, select, textarea { font: inherit; color: inherit; }
