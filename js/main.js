@@ -601,9 +601,9 @@ function initScrollGuard() {
     if (Math.abs(t.clientX - sx) > TH || Math.abs(t.clientY - sy) > TH) moved = true;
   }, { passive: true });
 
-  // 스크롤 제스처였다면 피드/성공사례 영역의 클릭을 취소
+  // 스크롤 제스처(손가락 이동)였다면 클릭을 취소 — 실제 탭(이동 없음)만 동작
   document.addEventListener('click', (e) => {
-    if (moved && e.target.closest('.feed, .cases')) {
+    if (moved) {
       e.preventDefault();
       e.stopPropagation();
     }

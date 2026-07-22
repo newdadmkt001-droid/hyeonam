@@ -147,7 +147,7 @@
 
 /* ---------- 2. Reset ---------- */
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 84px; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 84px; -webkit-tap-highlight-color: transparent; }
 body {
   margin: 0;
   background: var(--bg);
@@ -2281,6 +2281,17 @@ body.cmodal-open { overflow: hidden; }
 
   /* 성공사례 헤드 여백 */
   .cases__head { padding-inline: 4px; }
+}
+
+/* ---------- 터치 기기: 스크롤 중 호버로 '선택된 것처럼' 보이는 효과 제거 ---------- */
+@media (hover: none) {
+  .case:hover .case__inner { transform: none; box-shadow: none; }
+  .case:hover .case__stamp { transform: rotate(-6deg) scale(1) !important; }
+  .timing__card:hover { transform: none; box-shadow: none; }
+  .worry-card:hover .worry-card__link,
+  .diff-card:hover { transform: none; }
+  .footer__map:hover, .location__map:hover { border-color: var(--line); }
+  .feed__item:hover { background: transparent; }
 }
 
 /* ---------- Accessibility: reduced motion ---------- */
