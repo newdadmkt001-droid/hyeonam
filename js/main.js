@@ -19,6 +19,11 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzAHRYh8v5zY3_oD
 // 유입경로 판별 (UTM 우선, 없으면 referrer 도메인)
 function trafficSource() {
   try {
+    // 전용 랜딩 서브페이지(/카페, /블로그) 우선 판별
+    const path = decodeURIComponent(location.pathname);
+    if (path.includes('카페')) return '네이버 카페';
+    if (path.includes('블로그')) return '네이버 블로그';
+
     const p = new URLSearchParams(location.search);
     const utm = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']
       .map((k) => p.get(k)).filter(Boolean).join(' / ');
