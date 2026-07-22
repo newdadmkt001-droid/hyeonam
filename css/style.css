@@ -2147,6 +2147,7 @@ body.cmodal-open { overflow: hidden; }
     position: static; transform: none; max-width: none; width: 100%;
     padding: clamp(56px, 13vw, 84px) 24px 8px;
     text-align: center; align-items: center;
+    gap: clamp(12px, 2.6vw, 16px);
   }
   .about__sign { justify-content: center; }
   .about__figure {
