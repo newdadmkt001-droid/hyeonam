@@ -2188,7 +2188,8 @@ body.cmodal-open { overflow: hidden; }
   .about__eyebrow, .contact__eyebrow, .location__eyebrow, .diff__eyebrow {
     font-size: 13px; letter-spacing: .04em;
   }
-  .sec-title { font-size: clamp(27px, 7.6vw, 34px); line-height: 1.28; }
+  /* 섹션 제목: 모바일에서 오시는길(location__title)과 크기·두께 동일 */
+  .sec-title { font-size: clamp(27px, 7.6vw, 34px); line-height: 1.28; font-weight: 800; }
   .contact__title, .location__title, .cmodal__title { font-size: clamp(27px, 7.6vw, 34px); }
   .sec-desc, .contact__desc, .consult__head .sec-desc { font-size: 17px; line-height: 1.7; }
 
@@ -2279,7 +2280,7 @@ body.cmodal-open { overflow: hidden; }
   /* 섹션 제목/상담 제목 소폭 축소 */
   .contact__title { font-size: clamp(26px, 8vw, 34px); }
   .contact__desc br { display: none; }
-  .location__title { font-size: clamp(26px, 8vw, 36px); }
+  .sec-title, .location__title { font-size: clamp(26px, 8vw, 36px); }
 
   /* 오시는 길 대표전화·마퀴 */
   .location__phone-num { font-size: 30px; }
