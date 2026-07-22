@@ -279,6 +279,7 @@ summary::-webkit-details-marker { display: none; }
   font-size: 15px; font-weight: 600; letter-spacing: -.02em;
   white-space: nowrap;
   position: relative;
+  isolation: isolate; /* ::after 오버레이(z-index:-1)가 버튼 내부에만 적용되도록 */
   overflow: hidden;
   transition: transform .4s var(--ease), color .35s var(--ease),
               background-color .35s var(--ease), border-color .35s var(--ease),
@@ -294,7 +295,7 @@ summary::-webkit-details-marker { display: none; }
   color: #fff;
 }
 .btn--primary::after {
-  content: ""; position: absolute; inset: 0;
+  content: ""; position: absolute; inset: 0; z-index: -1; /* 글자 뒤에 깔리도록(텍스트 가림 방지) */
   background: linear-gradient(135deg, #256A49 0%, #185B7E 100%);
   opacity: 0; transition: opacity .4s var(--ease);
 }
