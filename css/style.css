@@ -716,6 +716,16 @@ summary::-webkit-details-marker { display: none; }
   font-weight: 700; line-height: 1.5; letter-spacing: -.02em;
   color: var(--text-1);
 }
+.worries__bridge::before {
+  content: "\201C"; /* 큰 여는 따옴표 */
+  display: block;
+  font-family: var(--ff-en, Georgia, serif);
+  font-size: clamp(48px, 8vw, 76px);
+  line-height: .8;
+  color: var(--accent-txt);
+  opacity: .38;
+  margin-bottom: clamp(6px, 1.4vw, 14px);
+}
 .worries__bridge strong { color: var(--accent-txt); font-weight: 800; }
 .worry-card__link {
   position: relative;
