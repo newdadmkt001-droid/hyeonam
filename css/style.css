@@ -709,6 +709,14 @@ summary::-webkit-details-marker { display: none; }
   /* 참고 이미지의 그린 → 블루 그라데이션이 밴드 전체를 관통 */
   background: linear-gradient(100deg, var(--grad-bright-a) 0%, var(--grad-bright-b) 100%);
 }
+.worries__bridge {
+  text-align: center;
+  margin: clamp(40px, 7vw, 66px) auto 0;
+  font-size: clamp(21px, 2.4vw, 32px);
+  font-weight: 700; line-height: 1.5; letter-spacing: -.02em;
+  color: var(--text-1);
+}
+.worries__bridge strong { color: var(--accent-txt); font-weight: 800; }
 .worry-card__link {
   position: relative;
   display: flex; flex-direction: column;
