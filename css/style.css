@@ -712,7 +712,7 @@ summary::-webkit-details-marker { display: none; }
 .worries__bridge {
   text-align: center;
   margin: clamp(64px, 10vw, 116px) auto 0;
-  font-size: clamp(30px, 5vw, 52px);
+  font-size: clamp(24px, 3.4vw, 40px);
   font-weight: 700; line-height: 1.5; letter-spacing: -.02em;
   color: var(--text-1);
 }
