@@ -726,7 +726,13 @@ summary::-webkit-details-marker { display: none; }
   opacity: .38;
   margin-bottom: clamp(6px, 1.4vw, 14px);
 }
-.worries__bridge strong { color: var(--accent-txt); font-weight: 800; }
+.worries__bridge strong {
+  position: relative; color: var(--accent-txt); font-weight: 800;
+  padding: 0 3px;
+  background: linear-gradient(var(--accent-veil), var(--accent-veil)) no-repeat left 88% / 0% 34%;
+  transition: background-size .8s .35s cubic-bezier(.22, 1, .36, 1);
+}
+.worries__bridge.is-in strong { background-size: 100% 34%; }
 .worry-card__link {
   position: relative;
   display: flex; flex-direction: column;
