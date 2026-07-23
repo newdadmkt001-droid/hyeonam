@@ -711,7 +711,7 @@ summary::-webkit-details-marker { display: none; }
 }
 .worries__bridge {
   text-align: center;
-  margin: clamp(40px, 7vw, 66px) auto 0;
+  margin: clamp(64px, 10vw, 116px) auto 0;
   font-size: clamp(21px, 2.4vw, 32px);
   font-weight: 700; line-height: 1.5; letter-spacing: -.02em;
   color: var(--text-1);
@@ -773,6 +773,7 @@ summary::-webkit-details-marker { display: none; }
 /* ③ ABOUT — 웹드라마 썸네일 카드 (참고 이미지 레이아웃) */
 .about {
   padding: var(--sec-pad) var(--gutter);
+  padding-top: clamp(38px, 4.5vw, 68px); /* 브릿지 문구와의 간격 축소 */
   background: var(--bg);
 }
 .about__card {
