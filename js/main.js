@@ -45,15 +45,25 @@ function trafficSource() {
   }
 }
 
-// 최초 진입한 페이지(랜딩) 판별
+// 현재 페이지 판별
 function landingPage() {
   try {
-    const path = decodeURIComponent(location.pathname).toLowerCase();
+    const path = decodeURIComponent(location.pathname).toLowerCase().replace(/\.html$/, '');
     if (path.includes('카페') || path.includes('cafe')) return '카페';
     if (path.includes('블로그') || path.includes('blog')) return '블로그';
-    if (path === '/' || path === '' || path.includes('index')) return '메인';
-    return path;
+    const seg = path.replace(/^\/+|\/+$/g, '').split('/')[0];
+    if (/^[1-4]$/.test(seg)) return '서브' + seg;
+    if (!seg || seg === 'index') return '메인';
+    return '/' + seg;
   } catch (e) { return '메인'; }
+}
+
+// 시트에 기록할 유입페이지
+// 서브페이지에서 제출 → 그 페이지 / 메인에서 제출 → 최초 진입 페이지 유지(내부 이동 시 유실 방지)
+function formPage() {
+  const cur = landingPage();
+  if (cur !== '메인') return cur;
+  try { return sessionStorage.getItem('hy_land') || '메인'; } catch (e) { return '메인'; }
 }
 
 // 최초 진입 시점의 유입경로 + 유입페이지를 세션에 저장(이후 이동해도 유지)
@@ -674,7 +684,7 @@ function initForm() {
            body: JSON.stringify(data),
          });
       */
-      const payload = { ...data, landing: storedLanding() };
+      const payload = { ...data, landing: formPage() };
       console.log('[현암] 상담신청', payload);
       await sendToSheet(payload);
       if (!SHEET_ENDPOINT) await new Promise((r) => setTimeout(r, 500)); // 미설정 시 데모 지연
@@ -757,7 +767,7 @@ function initModal() {
     btn.disabled = true; btn.style.opacity = '.6';
     if (result) result.textContent = '접수 중입니다...';
     try {
-      const payload = { ...Object.fromEntries(new FormData(form).entries()), landing: storedLanding() };
+      const payload = { ...Object.fromEntries(new FormData(form).entries()), landing: formPage() };
       console.log('[현암] 팝업 상담신청', payload);
       await sendToSheet(payload);
       if (!SHEET_ENDPOINT) await new Promise((r) => setTimeout(r, 500));
