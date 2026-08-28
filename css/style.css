@@ -2120,10 +2120,20 @@ summary::-webkit-details-marker { display: none; }
 }
 .fab.is-show { transform: none; }
 .fab__item { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; height: 60px; font-size: 16.5px; font-weight: 600; }
-.fab__item--tel { background: #fff; color: var(--text-1); }
+/* 전화·카톡은 아이콘 타일로 좁게 — 남는 폭은 전부 자격진단 CTA 몫 */
+.fab__tile {
+  flex: 0 0 68px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px; height: 60px;
+  background: #fff; color: var(--text-1);
+  font-size: 11.5px; font-weight: 600; letter-spacing: -.02em;
+}
+.fab__tile + .fab__tile { border-left: 1px solid var(--line); }
+.fab__ico svg { width: 22px; height: 22px; display: block; }
+.fab__tile--kakao .fab__ico { color: #FAE100; }
 /* 무료 자격진단 신청 — 시선 끄는 효과 (은은한 밝기 펄스 + 광택 스윕) */
 .fab__item--form {
-  background: linear-gradient(135deg, #EE3B2E 0%, #CC1B12 100%); color: #fff; flex: 1.4;
+  background: linear-gradient(135deg, #EE3B2E 0%, #CC1B12 100%); color: #fff; flex: 1;
   position: relative; overflow: hidden;
   animation: fabPulse 2.2s ease-in-out infinite;
 }
