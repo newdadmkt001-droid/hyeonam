@@ -685,6 +685,10 @@ summary::-webkit-details-marker { display: none; }
 .quick-rail__item:hover { background: rgba(255,255,255,.07); }
 .quick-rail__ico svg { width: 26px; height: 26px; display: block; }
 
+/* 카톡 상담 — 다크 알약 톤은 유지하고 아이콘만 카카오 옐로로 식별 */
+.quick-rail__item--kakao .quick-rail__ico { color: #FEE500; }
+.quick-rail__item--kakao:hover { background: rgba(254,229,0,.10); }
+
 .quick-rail__cta {
   width: 76px; height: 76px; border-radius: 50%;
   display: grid; place-items: center;
