@@ -1,0 +1,7 @@
+{
+  "name": "hyeonam",
+  "private": true,
+  "version": "1.0.0",
+  "description": "법무법인 현암 공식 홈페이지 (정적 + /api/consult 접수 중계)",
+  "engines": { "node": ">=18" }
+}

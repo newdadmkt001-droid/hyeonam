@@ -11,10 +11,16 @@ const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* =========================================================
-   상담 접수 → 구글 시트 연동 + 유입경로 수집
+   상담 접수 → 서버 중계(/api/consult) + 유입경로 수집
    ========================================================= */
-// Google Apps Script 웹앱 URL (배포 후 아래에 붙여넣기)
-const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzAHRYh8v5zY3_oDVPVPkOY-p4ihum0z57jl9gcVcH0shl5wb_BlB5QWcQ-yQcGhmj1zg/exec';
+// 접수는 같은 출처의 /api/consult 로만 보낸다.
+// 예전에는 Apps Script URL 을 여기에 그대로 적어두고 브라우저가 직접 POST 했는데,
+// 그 URL 을 읽은 누군가가 폼을 거치지 않고 가짜 접수 12건을 꽂아 넣었다(2026-09-30).
+// 이제 실제 수집 주소는 서버 환경변수에만 있고, 검증·레이트리밋도 서버에서 한다.
+const CONSULT_ENDPOINT = '/api/consult';
+
+// 폼이 그려진 시각. 제출까지 걸린 시간으로 봇을 거른다(허니팟은 쓰지 않는다).
+const FORM_READY_AT = Date.now();
 
 // 유입경로 판별 (UTM 우선, 없으면 referrer 도메인)
 function trafficSource() {
@@ -82,12 +88,17 @@ function storedLanding() {
   try { return sessionStorage.getItem('hy_land') || landingPage(); } catch (e) { return landingPage(); }
 }
 
-// 구글 시트로 전송 (미설정 시 스킵 → 데모 동작)
+// 접수 전송. 실패하면 예외를 던진다 —
+// 예전 no-cors 방식은 응답을 못 읽어 전송이 죽어도 "접수 완료"가 떴다. 그 침묵을 없앤다.
 async function sendToSheet(data) {
-  if (!SHEET_ENDPOINT) return;
-  try {
-    await fetch(SHEET_ENDPOINT, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(data) });
-  } catch (e) { /* no-cors: 응답 못 읽어도 접수는 처리됨 */ }
+  const r = await fetch(CONSULT_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ...data, elapsed: Date.now() - FORM_READY_AT }),
+  });
+  if (!r.ok) throw new Error('consult ' + r.status);
+  const out = await r.json().catch(() => ({}));
+  if (!out.ok) throw new Error('consult ' + (out.error || 'unknown'));
 }
 
 /* =========================================================
@@ -485,16 +496,17 @@ function initQuickBar() {
       return;
     }
 
-    const data = Object.fromEntries(new FormData(form).entries());
     const btn = $('.quickbar__submit', form);
     btn.disabled = true;
     btn.style.opacity = '.6';
     if (result) result.textContent = '접수 중입니다...';
 
     try {
-      /* TODO: 실제 접수 엔드포인트 연동 (상담폼과 동일한 곳으로) */
-      console.log('[현암] 빠른상담 데이터', data);
-      await new Promise((r) => setTimeout(r, 600));
+      // 이 바는 현재 어느 페이지에도 붙어 있지 않다(2026-09-30 확인).
+      // 다시 켤 때 주의: '상담내용'(#q-topic)은 시트에 대응 열이 없어 전달되지 않는다.
+      // 그 값도 남기려면 Apps Script 와 시트에 열을 먼저 추가할 것.
+      if (topic.value) console.warn('[현암] 상담내용은 시트 열이 없어 미전송:', topic.value);
+      await sendToSheet({ name: name.value, phone: phone.value, landing: formPage() });
       if (result) result.textContent = '접수되었습니다. 담당 변호사가 곧 연락드립니다.';
       form.reset();
     } catch (err) {
@@ -677,17 +689,8 @@ function initForm() {
     if (result) result.textContent = '접수 중입니다...';
 
     try {
-      /* TODO: 실제 접수 엔드포인트 연동
-         await fetch('/api/consult', {
-           method: 'POST',
-           headers: { 'Content-Type': 'application/json' },
-           body: JSON.stringify(data),
-         });
-      */
       const payload = { ...data, landing: formPage() };
-      console.log('[현암] 상담신청', payload);
       await sendToSheet(payload);
-      if (!SHEET_ENDPOINT) await new Promise((r) => setTimeout(r, 500)); // 미설정 시 데모 지연
 
       if (result) result.textContent = '';
       form.reset();
@@ -768,9 +771,7 @@ function initModal() {
     if (result) result.textContent = '접수 중입니다...';
     try {
       const payload = { ...Object.fromEntries(new FormData(form).entries()), landing: formPage() };
-      console.log('[현암] 팝업 상담신청', payload);
       await sendToSheet(payload);
-      if (!SHEET_ENDPOINT) await new Promise((r) => setTimeout(r, 500));
       if (result) result.textContent = '';
       form.reset();
       close();

@@ -1,6 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
+  "functions": { "api/consult.js": { "maxDuration": 10 } },
   "redirects": [
     { "source": "/카페", "destination": "/cafe", "permanent": true },
     { "source": "/블로그", "destination": "/blog", "permanent": true }
