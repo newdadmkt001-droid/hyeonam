@@ -26,15 +26,32 @@ const PHONE = /^01[016789]\d{7,8}$/;
 const DEBT = ['3천만원 미만', '3천만원~5천만원', '5천만원~1억원', '1억원~3억원', '3억원 이상'];
 const TIME = ['언제든 가능', '오전 (09~12시)', '오후 (12~18시)', '저녁 (18시 이후)'];
 
-// IP 당 10분에 5건. 인스턴스 단위라 완벽하진 않지만, 한 곳에서 몰아치는 것은 잡는다.
-const hits = new Map();
-function rateLimited(ip) {
+// 레이트리밋. 거절된 요청과 정상 접수를 따로 센다.
+//
+// 한 통에 몰아 세면 안 되는 이유: 국내 이동통신사는 CGNAT 라 수많은 고객이 같은 공인 IP 를
+// 쓴다. 스캐너 하나가 한도를 태우면 그 IP 를 공유하는 실고객까지 막힌다.
+// 그래서 스캐너 신호(거절)에는 빡빡하게, 실제 접수에는 넉넉하게 준다.
+const WINDOW = 10 * 60 * 1000;
+const MAX_BAD = 5;   // 거절 5회 — 훑어보는 놈은 여기서 끊긴다
+const MAX_OK = 10;   // 정상 접수 10건 — 같은 IP 를 공유하는 실고객들의 여유분
+const hits = new Map(); // ip → [{ t, ok }]
+
+function recent(ip) {
   const now = Date.now();
-  const arr = (hits.get(ip) || []).filter((t) => now - t < 10 * 60 * 1000);
-  arr.push(now);
-  hits.set(ip, arr);
+  const arr = (hits.get(ip) || []).filter((h) => now - h.t < WINDOW);
+  if (arr.length) hits.set(ip, arr);
+  else hits.delete(ip);
   if (hits.size > 5000) hits.clear(); // 메모리 폭주 방지
-  return arr.length > 5;
+  return arr;
+}
+function rateLimited(ip) {
+  const arr = recent(ip);
+  return arr.filter((h) => !h.ok).length >= MAX_BAD || arr.filter((h) => h.ok).length >= MAX_OK;
+}
+function record(ip, ok) {
+  const arr = recent(ip);
+  arr.push({ t: Date.now(), ok });
+  hits.set(ip, arr);
 }
 
 // 구글시트는 = + - @ 로 시작하는 값을 수식으로 해석한다. 앞에 작은따옴표를 붙여 글자로 고정한다.
@@ -78,21 +95,23 @@ module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
 
-  if (req.method !== 'POST') {
-    res.statusCode = 405;
-    return res.end(JSON.stringify({ ok: false, error: 'method' }));
-  }
+  const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.socket?.remoteAddress || '';
+  const reject = (status, error) => {
+    record(ip, false);
+    res.statusCode = status;
+    return res.end(JSON.stringify({ ok: false, error }));
+  };
+
+  if (req.method !== 'POST') return reject(405, 'method');
 
   // 폼이 아닌 곳에서 온 호출을 거른다. 브라우저는 same-origin 이라 Origin 이 자기 도메인이거나,
   // 구형 브라우저에선 아예 비어 있다. 값이 있는데 남의 도메인인 경우만 막는다.
   const origin = req.headers.origin || '';
   if (origin && !/^https?:\/\/([a-z0-9-]+\.)*hyeonam\.com$/i.test(origin) && !origin.includes('localhost')) {
     console.warn('외부 Origin 차단', origin);
-    res.statusCode = 403;
-    return res.end(JSON.stringify({ ok: false, error: 'origin' }));
+    return reject(403, 'origin');
   }
 
-  const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.socket?.remoteAddress || '';
   if (rateLimited(ip)) {
     console.warn('레이트리밋', ip);
     res.statusCode = 429;
@@ -102,15 +121,9 @@ module.exports = async (req, res) => {
   const b = await readBody(req);
 
   const phone = String(b.phone || '').replace(/\D/g, '');
-  if (!PHONE.test(phone)) {
-    res.statusCode = 400;
-    return res.end(JSON.stringify({ ok: false, error: 'phone' }));
-  }
+  if (!PHONE.test(phone)) return reject(400, 'phone');
   const name = cell(b.name, 40);
-  if (!name) {
-    res.statusCode = 400;
-    return res.end(JSON.stringify({ ok: false, error: 'name' }));
-  }
+  if (!name) return reject(400, 'name');
 
   // 봇 판별은 폼이 그려진 뒤 제출까지 걸린 시간으로 한다.
   // 숨은 입력칸(허니팟)은 쓰지 않는다 — 크롬·엣지가 자동완성으로 채워 실고객을 봇으로
@@ -118,6 +131,7 @@ module.exports = async (req, res) => {
   const elapsed = Number(b.elapsed);
   if (Number.isFinite(elapsed) && elapsed < 1500) {
     console.warn('봇으로 판단해 저장하지 않음', { elapsed, ip });
+    record(ip, false);
     return res.end(JSON.stringify({ ok: true })); // 봇에게는 성공으로 보이게 한다
   }
 
@@ -145,10 +159,12 @@ module.exports = async (req, res) => {
     if (!r.ok) throw new Error('apps script ' + r.status);
   } catch (err) {
     // 접수를 조용히 삼키지 않는다. 화면에 오류를 띄워 고객이 전화로라도 닿게 한다.
+    // 한도에는 세지 않는다 — 우리 쪽 장애인데 고객의 재시도를 막으면 안 된다.
     console.error('접수 중계 실패', { ip, name, phone, message: err?.message });
     res.statusCode = 502;
     return res.end(JSON.stringify({ ok: false, error: 'delivery' }));
   }
 
+  record(ip, true);
   res.end(JSON.stringify({ ok: true }));
 };
