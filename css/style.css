@@ -2489,3 +2489,19 @@ body.cmodal-open { overflow: hidden; }
   .header, .mobile-nav, .fab, .to-top, .hero__bg { display: none !important; }
   body { background: #fff; color: #111; }
 }
+
+/* ============ 동작 감소 요청 사용자 ============ */
+/* OS에서 "동작 줄이기"를 켠 사용자에게는 비필수 모션을 끈다.
+   배경 영상은 같은 장면의 정지 이미지로 바꿔 화면 구성은 그대로 유지한다. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .hero__bg:not(.is-empty) .hero__img { display: none; }
+  .hero__bg:not(.is-empty) {
+    background: url("../assets/img/hero-poster.webp") center / cover no-repeat;
+  }
+}
