@@ -1,4 +1,53 @@
 User-agent: *
 Allow: /
 
+# --- AI 검색/답변엔진 크롤러 명시 허용 ---
+# 아래 봇들은 자기 이름의 그룹만 읽기 때문에 별도로 명시해야 허용이 적용됩니다.
+
+# OpenAI
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+# Google (AI 개요 / Gemini 학습·인용)
+User-agent: Google-Extended
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# Microsoft Copilot / Bing
+User-agent: bingbot
+Allow: /
+
+# Apple
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Common Crawl (다수 모델의 학습 데이터 출처)
+User-agent: CCBot
+Allow: /
+
 Sitemap: https://hyeonam.com/sitemap.xml

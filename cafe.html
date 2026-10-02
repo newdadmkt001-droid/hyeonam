@@ -52,18 +52,195 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "LegalService",
-  "name": "법무법인 현암 서초분사무소",
-  "description": "변호사가 직접 상담하는 개인회생·개인파산 전문 법무법인",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "서초구 서초중앙로22길 97 5층 (서초동)",
-    "addressLocality": "서울특별시",
-    "addressCountry": "KR"
-  },
-  "openingHours": "Mo-Fr 09:00-18:00",
-  "areaServed": "KR",
-  "priceRange": "상담비 무료"
+  "@graph": [
+    {
+      "@type": "LegalService",
+      "@id": "https://hyeonam.com/#organization",
+      "name": "법무법인 현암 서초분사무소",
+      "alternateName": "법무법인 현암",
+      "url": "https://hyeonam.com/",
+      "description": "변호사가 직접 상담하는 개인회생·개인파산 전문 법무법인입니다. 의뢰인의 소득·재산·채무 상황을 면밀히 검토하여 현실적인 해결방안을 제시합니다.",
+      "telephone": "1668-5831",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://hyeonam.com/assets/img/logo.png"
+      },
+      "image": "https://hyeonam.com/assets/img/og.jpg",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "서초중앙로22길 97, 5층",
+        "addressLocality": "서초구",
+        "addressRegion": "서울특별시",
+        "addressCountry": "KR"
+      },
+      "hasMap": "https://map.naver.com/p/search/%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EC%84%9C%EC%B4%88%EA%B5%AC%20%EC%84%9C%EC%B4%88%EC%A4%91%EC%95%99%EB%A1%9C22%EA%B8%B8%2097",
+      "sameAs": [
+        "https://pf.kakao.com/_xbqUSX"
+      ],
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday"
+          ],
+          "opens": "09:00",
+          "closes": "18:00"
+        }
+      ],
+      "areaServed": {
+        "@type": "Country",
+        "name": "대한민국"
+      },
+      "availableLanguage": {
+        "@type": "Language",
+        "name": "한국어",
+        "alternateName": "ko"
+      },
+      "priceRange": "상담비 무료",
+      "serviceType": [
+        "개인회생",
+        "개인파산",
+        "채무조정",
+        "금지명령"
+      ],
+      "knowsAbout": [
+        "개인회생",
+        "개인파산",
+        "채무조정",
+        "금지명령",
+        "변제계획",
+        "면책"
+      ],
+      "potentialAction": {
+        "@type": "CommunicateAction",
+        "name": "무료 자격진단 신청",
+        "target": "https://hyeonam.com/#contact"
+      },
+      "employee": {
+        "@id": "https://hyeonam.com/#lawyer-jeongchanghee"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://hyeonam.com/#website",
+      "url": "https://hyeonam.com/",
+      "name": "법무법인 현암",
+      "inLanguage": "ko-KR",
+      "publisher": {
+        "@id": "https://hyeonam.com/#organization"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://hyeonam.com/#webpage",
+      "url": "https://hyeonam.com/",
+      "name": "법무법인 현암 | 개인회생·개인파산 전문",
+      "description": "개인회생·개인파산 전문 법무법인 현암. 의뢰인의 상황을 면밀히 검토하여 가장 현실적인 해결방안을 제시하고 끝까지 함께합니다.",
+      "inLanguage": "ko-KR",
+      "isPartOf": {
+        "@id": "https://hyeonam.com/#website"
+      },
+      "about": {
+        "@id": "https://hyeonam.com/#organization"
+      },
+      "primaryImageOfPage": "https://hyeonam.com/assets/img/og.jpg",
+      "dateModified": "2026-10-02"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://hyeonam.com/#faq",
+      "inLanguage": "ko-KR",
+      "isPartOf": {
+        "@id": "https://hyeonam.com/#webpage"
+      },
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "개인회생이란 무엇인가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "개인회생은 과도한 채무로 인해 경제적 어려움을 겪는 채무자가 법원의 인가를 받아 채무를 조정하는 제도입니다. 신청인의 소득, 재산 및 채무 상황 등을 종합적으로 검토하여 진행됩니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "개인회생은 어떤 경우에 신청할 수 있나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "지속적인 소득이 있으며 채무를 정상적으로 변제하기 어려운 경우 신청을 검토할 수 있습니다. 신청 가능 여부는 개별 사안에 따라 달라질 수 있습니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "개인회생을 신청하면 어떤 절차로 진행되나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "상담 및 서류 준비 후 법원에 신청서를 제출하며, 법원의 심사를 거쳐 절차가 진행됩니다. 진행 과정은 사건별로 차이가 있을 수 있습니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "개인회생 진행 중에도 직장생활이 가능한가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "개인회생은 직장생활과 무관하게 진행할 수 있으며, 직장인, 자영업자, 프리랜서 등 다양한 직업군이 신청할 수 있습니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "재산이 있어도 개인회생 신청이 가능한가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "재산이 있다고 해서 반드시 신청이 제한되는 것은 아닙니다. 재산 및 채무 현황 등을 종합적으로 검토하여 판단하게 됩니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "개인회생 절차는 얼마나 걸리나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "진행 기간은 사건의 내용, 제출 서류 및 법원의 심사 일정 등에 따라 달라질 수 있습니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "개인회생 비용은 어떻게 결정되나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "비용은 사건의 내용, 채권자 수, 채무 규모 등에 따라 달라질 수 있으며 자세한 사항은 상담을 통해 안내받으실 수 있습니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "개인회생이 종료된 후에는 어떻게 되나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "인가된 변제계획에 따라 절차가 종료되며, 이후 금융거래 및 신용관리는 개인의 상황에 따라 달라질 수 있습니다."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://hyeonam.com/#lawyer-jeongchanghee",
+      "name": "정창희",
+      "jobTitle": "변호사",
+      "image": "https://hyeonam.com/assets/img/lawyer.png",
+      "worksFor": {
+        "@id": "https://hyeonam.com/#organization"
+      },
+      "knowsAbout": [
+        "개인회생",
+        "개인파산",
+        "도산",
+        "채무조정"
+      ]
+    }
+  ]
 }
 </script>
 </head>
@@ -75,7 +252,7 @@
 <header class="header" id="header">
   <div class="container header__inner">
     <a class="logo" href="#hero" aria-label="법무법인 홈">
-      <img class="logo__img" src="assets/img/logo.png" alt="법무법인" decoding="async" />
+      <img class="logo__img" src="assets/img/logo.webp" alt="법무법인" decoding="async" />
     </a>
 
 
@@ -113,7 +290,7 @@
 
   <div class="hero__frame">
     <div class="hero__bg" aria-hidden="true">
-      <video class="hero__img" autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture
+      <video class="hero__img" autoplay muted loop playsinline webkit-playsinline preload="metadata" poster="assets/img/hero-poster.webp" disablepictureinpicture
              onerror="this.closest('.hero__bg').classList.add('is-empty')">
         <source src="assets/video/hero.mp4" type="video/mp4" />
       </video>
@@ -125,7 +302,7 @@
     <div class="container hero__inner">
       <div class="hero__slider" id="hero-slider">
         <article class="hero__slide is-active" data-slide="0">
-          <img class="hero__logo" src="assets/img/logo-white.png" alt="법무법인 현암" decoding="async" />
+          <img class="hero__logo" src="assets/img/logo-white.webp" alt="법무법인 현암" decoding="async" />
           <p class="hero__title">
             <span class="line"><span class="line__in">매달 갚아도 줄지 않는 빚,</span></span>
             <span class="line"><span class="line__in">언제까지 <em>버티실 건가요?</em></span></span>
@@ -252,7 +429,7 @@
 
     <!-- 우: 인물 -->
     <div class="about__figure">
-      <img src="assets/img/lawyer.png" alt="법무법인 현암 대표변호사 정창희" loading="lazy" decoding="async" />
+      <img src="assets/img/lawyer.webp" alt="법무법인 현암 대표변호사 정창희" loading="lazy" decoding="async" />
     </div>
   </div>
 </section>
@@ -276,7 +453,7 @@
         <ul class="timing__cards">
           <li class="timing__card">
             <span class="timing__card-media">
-              <img src="assets/img/timing-1.jpg" alt="" loading="lazy" decoding="async"
+              <img src="assets/img/timing-1.webp" alt="" loading="lazy" decoding="async"
                    onerror="this.closest('.timing__card-media').classList.add('is-empty')" />
             </span>
             <span class="timing__card-body">
@@ -289,7 +466,7 @@
           </li>
           <li class="timing__card">
             <span class="timing__card-media">
-              <img src="assets/img/timing-2.jpg" alt="" loading="lazy" decoding="async"
+              <img src="assets/img/timing-2.webp" alt="" loading="lazy" decoding="async"
                    onerror="this.closest('.timing__card-media').classList.add('is-empty')" />
             </span>
             <span class="timing__card-body">
@@ -302,7 +479,7 @@
           </li>
           <li class="timing__card">
             <span class="timing__card-media">
-              <img src="assets/img/timing-3.jpg" alt="" loading="lazy" decoding="async"
+              <img src="assets/img/timing-3.webp" alt="" loading="lazy" decoding="async"
                    onerror="this.closest('.timing__card-media').classList.add('is-empty')" />
             </span>
             <span class="timing__card-body">
@@ -315,7 +492,7 @@
           </li>
           <li class="timing__card">
             <span class="timing__card-media">
-              <img src="assets/img/timing-4.jpg" alt="" loading="lazy" decoding="async"
+              <img src="assets/img/timing-4.webp" alt="" loading="lazy" decoding="async"
                    onerror="this.closest('.timing__card-media').classList.add('is-empty')" />
             </span>
             <span class="timing__card-body">
@@ -380,7 +557,7 @@
     <!-- 우: 지역 지도 -->
     <div class="consult__mapwrap reveal" data-delay="140">
       <div class="korea">
-        <img class="korea__img" src="assets/img/map-area.png" alt="전국 상담 가능 지역 지도" loading="lazy" decoding="async" />
+        <img class="korea__img" src="assets/img/map-area.webp" alt="전국 상담 가능 지역 지도" loading="lazy" decoding="async" />
         <div class="korea__hub" aria-hidden="true">
           <svg class="korea__rays" viewBox="-160 -160 320 320">
             <defs>
@@ -420,7 +597,7 @@
         <div class="case__inner">
           <span class="case__num" aria-hidden="true">01</span>
           <div class="case__media">
-            <img src="assets/img/person1.png" alt="개인파산 결정문" loading="lazy" decoding="async"
+            <img src="assets/img/person1.webp" alt="개인파산 결정문" loading="lazy" decoding="async"
                  onerror="this.closest('.case__media').classList.add('is-empty')" />
             <span class="case__stamp"><b>100% 탕감</b></span>
           </div>
@@ -435,7 +612,7 @@
         <div class="case__inner">
           <span class="case__num" aria-hidden="true">02</span>
           <div class="case__media">
-            <img src="assets/img/person2.png" alt="개인회생 결정문" loading="lazy" decoding="async"
+            <img src="assets/img/person2.webp" alt="개인회생 결정문" loading="lazy" decoding="async"
                  onerror="this.closest('.case__media').classList.add('is-empty')" />
             <span class="case__stamp"><b>80% 탕감</b></span>
           </div>
@@ -450,7 +627,7 @@
         <div class="case__inner">
           <span class="case__num" aria-hidden="true">03</span>
           <div class="case__media">
-            <img src="assets/img/person3.png" alt="개인회생 결정문" loading="lazy" decoding="async"
+            <img src="assets/img/person3.webp" alt="개인회생 결정문" loading="lazy" decoding="async"
                  onerror="this.closest('.case__media').classList.add('is-empty')" />
             <span class="case__stamp"><b>91% 탕감</b></span>
           </div>
@@ -465,7 +642,7 @@
         <div class="case__inner">
           <span class="case__num" aria-hidden="true">04</span>
           <div class="case__media">
-            <img src="assets/img/person4.png" alt="청년회생 결정문" loading="lazy" decoding="async"
+            <img src="assets/img/person4.webp" alt="청년회생 결정문" loading="lazy" decoding="async"
                  onerror="this.closest('.case__media').classList.add('is-empty')" />
             <span class="case__stamp"><b>24개월 변제</b></span>
           </div>
@@ -737,7 +914,7 @@
   <div class="container footer__inner">
     <!-- 로고 + 소셜 -->
     <div class="footer__brand">
-      <img class="footer__logo" src="assets/img/logo-white.png" alt="법무법인 현암" decoding="async" />
+      <img class="footer__logo" src="assets/img/logo-white.webp" alt="법무법인 현암" decoding="async" />
     </div>
 
     <!-- 사업자 정보 -->

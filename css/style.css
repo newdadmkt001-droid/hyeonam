@@ -1686,7 +1686,7 @@ summary::-webkit-details-marker { display: none; }
 /* ⑩ CONTACT — 좌 타이틀 / 우 폼 (배경 사진 + 검정 오버레이) */
 .contact {
   position: relative;
-  background: url(../assets/img/contact-bg.jpg) center / cover no-repeat;
+  background: url(../assets/img/contact-bg.webp) center / cover no-repeat;
 }
 .contact::before {
   content: ""; position: absolute; inset: 0; z-index: 0;
