@@ -842,6 +842,10 @@ summary::-webkit-details-marker { display: none; }
   display: flex; flex-direction: column; justify-content: center;
   gap: clamp(24px, 3vw, 40px);
 }
+/* 주의: Cormorant Garamond / Nanum Pen Script 는 더 이상 내려받지 않는다.
+   아래 두 규칙(.about__wordmark, .about__sign-mark)이 HTML 어디에도 쓰이지 않아
+   폰트 요청에서 뺐다(@font-face 135개 → 12개). 다시 쓰려면 index.html 의
+   fonts.googleapis.com 링크에 해당 패밀리를 되살려야 한다. */
 /* 하단 대형 세리프 워드마크 (연하게, 인물 뒤) */
 .about__wordmark {
   position: absolute; z-index: 2; pointer-events: none; user-select: none;
