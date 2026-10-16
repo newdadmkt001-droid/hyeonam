@@ -627,6 +627,72 @@ function initCustomSelect() {
 }
 
 /* =========================================================
+   7-1. 하단 고정 상담 바 (721px 이상) — 2026-10-16
+   고정 CTA 가 모바일(.fab, ≤720)과 데스크톱 측면 메뉴(≥1241)에만 있어
+   721~1240px 에는 하나도 없었다. 이 바가 721px 이상을 전부 맡는다.
+   1180px 이상은 인라인 폼, 그 아래는 팝업을 여는 버튼으로 접힌다(CSS).
+   7번 initQuickBar 를 되살리지 않은 이유: 동의 확인 없이 보내게 돼 있었다.
+   ========================================================= */
+function initDock() {
+  const dock = $('#dock');
+  if (!dock) return;
+  const form = $('#dock-form', dock);
+  const msg = $('#dock-msg', dock);
+  const name = $('#d-name', dock);
+  const phone = $('#d-phone', dock);
+  const debt = $('#d-debt', dock);
+  const agree = $('#d-agree', dock);
+  bindPhoneHyphen(phone);
+
+  // 상담폼(#contact)이 화면에 들어오면 숨긴다 — 같은 폼이 두 개 보이면 어디에 쓸지 헷갈린다
+  const contact = $('#contact');
+  const sync = () => {
+    if (!contact) return;
+    const r = contact.getBoundingClientRect();
+    dock.classList.toggle('is-hide', r.top < innerHeight * 0.85 && r.bottom > innerHeight * 0.15);
+  };
+  window.addEventListener('scroll', sync, { passive: true });
+  sync();
+
+  let timer;
+  const say = (t) => {
+    msg.textContent = t;
+    clearTimeout(timer);
+    if (t) timer = setTimeout(() => { msg.textContent = ''; }, 5000);
+  };
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const checks = [
+      [name, !name.value.trim()],
+      [phone, !isMobileNumber(phone.value)],
+    ];
+    checks.forEach(([el, bad]) => el.classList.toggle('is-error', bad));
+    agree.closest('.dock__agree').classList.toggle('is-error', !agree.checked);
+    const first = checks.find(([, bad]) => bad);
+    if (first) { first[0].focus(); say('성함과 연락처를 확인해주세요.'); return; }
+    if (!agree.checked) { agree.focus(); say('개인정보 수집에 동의해주세요.'); return; }
+
+    const btn = $('.dock__submit', form);
+    btn.disabled = true;
+    btn.style.opacity = '.6';
+    say('접수 중입니다...');
+    try {
+      await sendToSheet({ name: name.value, phone: phone.value, debt: debt.value, agree: true, landing: formPage() });
+      say('');
+      form.reset();
+      showSuccessPopup('담당 변호사가 곧 연락드리겠습니다.');
+    } catch (err) {
+      console.error(err);
+      say('전송에 실패했습니다. 1668-5831 로 전화 주세요.');
+    } finally {
+      btn.disabled = false;
+      btn.style.opacity = '';
+    }
+  });
+}
+
+/* =========================================================
    8. Contact Form — 검증 + 전화번호 자동 하이픈
    실제 전송은 handleSubmit 내부의 TODO 지점에 연동하세요.
    ========================================================= */
@@ -863,6 +929,7 @@ function boot() {
   initLiveFeed();
   initFaq();
   initQuickBar();
+  initDock();
   initCustomSelect();
   initForm();
   initModal();
