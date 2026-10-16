@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '2621327384989198');
+fbq('track', 'PageView');
+</script>
+<!-- End Meta Pixel Code -->
+<title>법무법인 현암 | 30초 상담 신청</title>
+<meta name="description" content="두 가지만 답하면 법무법인 현암 변호사가 직접 전화드립니다. 개인회생·개인파산 무료 상담." />
+<!-- 광고 전용 페이지. 검색에 따로 노출될 이유가 없고, 얇은 페이지가 색인되면 본 사이트에 득이 없다 -->
+<meta name="robots" content="noindex, follow" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<meta name="theme-color" content="#FFFFFF" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="법무법인 현암" />
+<meta property="og:title" content="법무법인 현암 | 30초 상담 신청" />
+<meta property="og:description" content="두 가지만 답하면 변호사가 직접 전화드립니다." />
+<meta property="og:image" content="https://hyeonam.com/assets/img/og.jpg" />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<link rel="stylesheet" href="/css/apply.css" />
+<!-- Danggeun Market Code -->
+<script>
+  (function (w, d) {
+    if (w.karrotPixel) return;
+    var k = { stub: true, queue: [] };
+    k.init = function () { k.queue.push(['init', arguments, Date.now()]); };
+    k.track = function () { k.queue.push(['track', arguments, Date.now()]); };
+    w.karrotPixel = k;
+    var s = d.createElement('script');
+    s.async = true;
+    s.src = 'https://karrot-pixel.business.daangn.com/karrot-pixel.js';
+    var f = d.getElementsByTagName('script')[0];
+    f && f.parentNode ? f.parentNode.insertBefore(s, f) : d.head.appendChild(s);
+  })(window, document);
+  window.karrotPixel.init('1792059107097769001');
+  window.karrotPixel.track('ViewPage');
+</script>
+<!-- End Danggeun Market Code -->
+</head>
+<body>
+
+<!-- 메뉴 없이 로고만. 광고로 들어온 사람이 갈 곳은 신청 하나뿐이다 -->
+<nav class="nav" id="nav"><div class="in">
+  <a class="brand" href="#/" aria-label="법무법인 현암"><img src="/assets/img/logo.webp" alt="법무법인 현암" width="700" height="273" decoding="async" /></a>
+</div></nav>
+
+<main id="main"></main>
+
+<!-- Smartlog -->
+<script type="text/javascript">
+var hpt_info={'_account':'UHPT-39242', '_server': 'a31'};
+</script>
+<script language="javascript" src="//cdn.smlog.co.kr/core/smart.js" charset="utf-8"></script>
+<noscript><img src="//a31.smlog.co.kr/smart_bda.php?_account=39242" style="display:none;width:0;height:0;" border="0"/></noscript>
+<!-- End Smartlog -->
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   현암 광고 전용 페이지 — 2문항 + 연락처
+   화면과 동작은 빚탈길 2문항 퍼널(bittalgil-web 5bd5413)을 그대로 옮겼다.
+   달라진 것은 셋뿐이다:
+     1) 로고가 현암이고 메뉴가 없다
+     2) 접수는 hyeonam.com 기존 경로 /api/consult → Apps Script → 구글시트 + 텔레그램
+     3) 당근 픽셀이 이 페이지에만 있다
+   ══════════════════════════════════════════════════════════════ */
+
+const TEL='1668-5831';
+/* 봇 판별용 — /api/consult 는 폼이 뜬 뒤 1.5초 안에 들어온 제출을 봇으로 보고 버린다.
+   연락처 칸이 뜬 시점이 아니라 페이지가 뜬 시점부터 잰다. 연락처 칸 기준이면
+   자동완성으로 이름·번호를 한 번에 채우고 바로 누른 실고객이 1.5초 안에 걸려
+   '접수됐다'는 화면을 보고도 리드가 사라진다 */
+const PAGE_AT=Date.now();
+
+/* ── 문항 ──
+   보내는 값은 /api/consult 의 목록과 글자까지 맞춘다. 화면 글자와 보내는 값이 다른 이유다.
+   채무 구간: API 목록은 5구간인데 여기는 3구간이다. '3천만원 미만'만 목록과 같고
+   나머지 둘은 목록에 없어 세정 후 그대로 통과한다(API 가 버리지 않게 돼 있다). */
+const QS=[
+  {q:'빚이 대략<br>얼마인가요?',o:[['3천만 원 미만','3천만원 미만'],['3천만 ~ 1억 원','3천만원~1억원'],['1억 원 이상','1억원 이상']]},
+  {q:'어떤 쪽을<br>알아보고 계세요?',o:[['개인회생','개인회생'],['개인파산','개인파산'],['잘 모르겠어요','잘 모름']]}
+];
+const QHINT={0:'카드론·현금서비스·연체이자까지 합친 금액입니다',
+  1:'모르셔도 괜찮습니다. 통화에서 맞는 제도를 찾아 드립니다'};
+/* 통화 시간 — 보내는 값은 API 의 TIME 목록과 정확히 같다 */
+const CALLTIMES=[['언제든 가능','언제든 가능'],['오전 9~12시','오전 (09~12시)'],
+  ['오후 12~18시','오후 (12~18시)'],['저녁 18시 이후','저녁 (18시 이후)']];
+
+const CHAP=[['빚',1],['상담',1],['연락처',0]];
+const CHAT=(()=>{const a=[];CHAP.forEach((c,ci)=>{for(let k=0;k<c[1];k++)a.push([ci,k]);});return a;})();
+let qi=0, onContact=false; const ans=[];
+
+const IC={
+  check:(s=22)=>`<svg width="${s}" height="${s}" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.4L5.6 10.5L11.5 4.2" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  back:`<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5L8 12L15 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+};
+const el=html=>{const t=document.createElement('template');t.innerHTML=html.trim();return t.content.firstChild;};
+const digits=v=>String(v||'').replace(/\D/g,'');
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const SENT=()=>{try{return !!sessionStorage.getItem('hy_lp_sent')}catch(e){return false}};
+
+/* ══ 화면 ══ */
+const R={};
+
+R.home=()=>`
+<header class="hero">
+  <div class="hlead">
+    <span class="bdg"><i></i>법무법인 현암 · 실제 인가 사건 기준</span>
+    <h1 class="d1">두 가지만 답하면<br>변호사가 전화드려요</h1>
+    <p class="sub">빚이 얼마인지, 어느 쪽을 보고 계신지. 그 둘이면 됩니다.</p>
+    <a class="btn full hcta" href="#/q">30초 상담 신청</a>
+    <p class="fine hfine">2문항 · 무료 · 평일 09–18시 접수는 당일 통화</p>
+  </div>
+  <div class="hdemo">
+    <div class="q1card" id="hq1">
+      <div class="q1h"><b id="hHd">상담 신청</b><span id="hStep">1 / 3</span></div>
+      <div class="hscenes">
+        <div class="hscn in" id="hQ">
+          <p class="q1q" id="hQz">${QS[0].q}</p>
+          <div class="q1opts">${QS[0].o.map((o,i)=>`<button class="q1o" type="button" data-i="${i}">
+            <span class="lb">${o[0]}</span><span class="ck">${IC.check(20)}</span></button>`).join('')}</div>
+        </div>
+        <div class="hscn out" id="hR">
+          <p class="hrk">접수되면</p>
+          <div class="hdone"><b>오늘 안에</b><span>변호사가 직접 전화드립니다</span></div>
+          <p class="hfin">2문항 · 무료 · 통화 가능한 시간만 고르면 끝</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+${foot()}`;
+
+R.q=()=>`<div style="display:flex;flex-direction:column;min-height:100svh">
+  <div class="qtop"><div class="row"><button class="bk" id="qBack" type="button" aria-label="이전">${IC.back}</button>
+    <span class="n" id="qN">1 / 3</span></div>
+    <div class="segs" id="qSegs">${CHAP.map((c,i)=>`<div class="sg" data-c="${i}">
+      <div class="tk"><i></i></div><em>${c[0]}</em></div>`).join('')}</div></div>
+  <div id="qStage" style="display:flex;flex-direction:column;flex:1"></div>
+</div>`;
+
+R.done=()=>`<div style="display:flex;flex-direction:column;min-height:100svh">
+<header class="phead"><span class="kick">접수 완료</span>
+  <h1 class="d2">이제부터는<br>법무법인 현암이 진행합니다</h1>
+  <p class="bd">신청이 접수됐습니다. 아래 순서로 연락드립니다.</p></header>
+<section class="sec" style="padding-top:var(--s7)"><div class="wrap">
+  <div class="tl">
+    <div class="st"><b>오늘 안에 전화</b><span class="d">변호사가 직접 통화합니다. 지금 상황에서 가능한 방법을 여기서 확인합니다.</span><span class="when">평일 09–18시 · 접수는 당일</span></div>
+    <div class="st"><b>서류 안내 문자</b><span class="d">소득·채무 서류 목록을 문자로 보냅니다. 모바일 촬영으로 제출하면 됩니다.</span><span class="when">통화 직후</span></div>
+    <div class="st"><b>법원 접수·진행</b><span class="d">관할 법원 접수와 보정은 법무법인 현암이 대행합니다. 진행 상황은 문자로 안내합니다.</span><span class="when">서류 확보 후 1~2주</span></div>
+  </div>
+  <div class="note">급하시면 지금 전화하셔도 됩니다. <a href="tel:${TEL.replace(/-/g,'')}"><b>${TEL}</b></a></div>
+</div></section>
+<p class="legal wrap" style="margin-top:auto;padding-bottom:var(--s9)">사건마다 사정이 달라 같은 결과를 보장하지 않습니다.</p>
+</div>`;
+
+/* 변호사 광고 규정상 광고책임변호사·사무소 표기는 빼면 안 된다. 값은 hyeonam.com 푸터와 같다 */
+function foot(){return `<footer class="lpfoot">
+  <dl>
+    <dt>상호</dt><dd>법무법인 현암 서초분사무소</dd>
+    <dt>대표</dt><dd>이상곤</dd>
+    <dt>광고책임변호사</dt><dd>정창희</dd>
+    <dt>사업자등록번호</dt><dd>156-85-02574</dd>
+    <dt>주소</dt><dd>서울특별시 서초구 서초중앙로22길 97, 5층 (서초동)</dd>
+    <dt>전화</dt><dd><a href="tel:${TEL.replace(/-/g,'')}">${TEL}</a></dd>
+  </dl>
+  <p class="c">© 2026 HYEONAM LAW FIRM. All rights reserved.</p>
+</footer>`;}
+
+/* ══ 문항 ══ */
+function swapIn(stage, body){
+  stage.classList.add('qswap');
+  const out=stage.querySelector('.qbody');
+  if(out&&!RM){out.classList.remove('enter');out.classList.add('leave');
+    requestAnimationFrame(()=>{out.style.opacity='0';out.style.transform='translateY(-12px)';});
+    setTimeout(()=>out.remove(),260);}
+  else if(out)out.remove();
+  stage.appendChild(body);
+}
+
+function renderQ(){
+  const stage=document.getElementById('qStage'); if(!stage)return;
+  onContact=false;
+  document.getElementById('qN').textContent=(qi+1)+' / 3';
+  document.querySelectorAll('#qSegs .sg').forEach((sg,ci)=>{
+    const [cur,k]=CHAT[qi];
+    const w=ci<cur?100:ci>cur?0:(k/CHAP[ci][1])*100;
+    sg.querySelector('i').style.width=w+'%';
+    sg.classList.toggle('on',ci===cur); sg.classList.toggle('done',ci<cur);
+  });
+  const s=QS[qi];
+  const log=ans.slice(0,qi).map((v,i)=>v==null?'':`<div class="lg">${QS[i].o[v][0]}</div>`).filter(Boolean).join('');
+  const body=document.createElement('div');
+  body.className='qbody enter';
+  body.innerHTML=`${log?`<div class="qlog">${log}</div>`:''}
+    <h1 class="q">${s.q}</h1>
+    <div class="opts">${s.o.map((o,i)=>`<button class="opt${ans[qi]===i?' on':''}" data-i="${i}" type="button">
+      <span>${o[0]}</span><span class="ck">${IC.check(22)}</span><span class="bg">선택</span></button>`).join('')}</div>
+    ${QHINT[qi]?`<p class="qhint">${QHINT[qi]}</p>`:''}
+    <p class="qfoot">고르면 바로 다음으로 넘어가요. 이름·연락처는 마지막에 한 번만 받습니다.</p>`;
+  swapIn(stage, body);
+  body.querySelectorAll('.opt').forEach(o=>o.onclick=()=>{
+    body.querySelectorAll('.opt').forEach(x=>x.classList.remove('on'));
+    o.classList.add('on'); ans[qi]=+o.dataset.i;
+    setTimeout(()=>{ if(qi<QS.length-1){qi++;renderQ();} else renderContact(); },340);});
+}
+
+/* ══ 연락처 ══ */
+function renderContact(){
+  const stage=document.getElementById('qStage'); if(!stage)return;
+  onContact=true;
+  document.getElementById('qN').textContent='3 / 3';
+  document.querySelectorAll('#qSegs .sg').forEach((sg,ci)=>{
+    sg.querySelector('i').style.width=ci<2?'100%':'0%';
+    sg.classList.toggle('on',ci===2); sg.classList.toggle('done',ci<2);
+  });
+  const log=ans.map((v,i)=>v==null?'':`<div class="lg">${QS[i].o[v][0]}</div>`).filter(Boolean).join('');
+  const body=document.createElement('div');
+  body.className='qbody enter';
+  body.innerHTML=`${log?`<div class="qlog">${log}</div>`:''}
+    <h1 class="q">어디로<br>전화드릴까요?</h1>
+    <p class="qhint">법무법인 현암 변호사가 직접 통화합니다. 상담료는 없습니다.</p>
+    <form id="cfForm" novalidate style="margin-top:var(--s5)">
+      <div class="fields">
+        <div class="fi"><input type="text" name="name" placeholder="이름" autocomplete="name"></div>
+        <div class="fi"><input type="tel" name="phone" placeholder="휴대폰 번호"
+          inputmode="numeric" autocomplete="tel" maxlength="13"></div>
+      </div>
+      <p class="ctlb">통화 가능한 시간</p>
+      <div class="ctimes">${CALLTIMES.map((t,i)=>
+        `<button class="ct${i===0?' on':''}" type="button" data-i="${i}">${t[0]}</button>`).join('')}</div>
+      <label class="agree"><input type="checkbox" name="agree">
+        <span>개인정보 수집·이용에 동의합니다. (필수)</span></label>
+      <details class="pnote"><summary>수집 내용 보기</summary>
+        <dl>
+          <dt>수집 주체</dt><dd>법무법인 현암</dd>
+          <dt>수집 항목</dt><dd>이름, 휴대폰 번호, 통화 가능한 시간, 대략적인 채무 규모, 상담 분야</dd>
+          <dt>이용 목적</dt><dd>개인회생·개인파산 등 법률상담 연결 및 상담 안내</dd>
+          <dt>보유 기간</dt><dd>상담 목적 달성 시까지. 관계 법령에 따라 보존이 필요한 경우 그 기간</dd>
+          <dt>거부 권리</dt><dd>동의를 거부할 수 있으며, 거부 시 상담 신청이 제한됩니다.</dd>
+        </dl></details>
+      <button class="btn full" type="submit" style="margin-top:var(--s5)">상담 신청하기</button>
+    </form>
+    <p class="qfoot">주민등록번호·계좌번호·신용정보는 묻지 않습니다.</p>`;
+  swapIn(stage, body);
+
+  let ti=0;
+  body.querySelectorAll('.ct').forEach(b=>b.onclick=()=>{
+    body.querySelectorAll('.ct').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); ti=+b.dataset.i;
+  });
+
+  const f=document.getElementById('cfForm');
+  const validate=wireForm(f);
+  f.onsubmit=async e=>{e.preventDefault();
+    if(!validate())return;
+    const n=f.querySelector('[name=name]'), t=f.querySelector('[name=phone]');
+    const kind=ans[1]!=null?QS[1].o[ans[1]][1]:'';
+    /* 상담 분야는 API·시트에 칸이 없다. 시트 쪽 Apps Script 는 이 저장소 밖이라
+       고치지 않는다(남의 시트 스크립트를 덮어써 가동본을 날린 전례가 있다).
+       대신 유입페이지(landing) 칸에 붙여 보낸다 — 시트와 알림에 그대로 찍힌다 */
+    submitLead(f,{
+      name:n.value.trim(), phone:digits(t.value),
+      debt: ans[0]!=null?QS[0].o[ans[0]][1]:'',
+      time: CALLTIMES[ti][1],
+      landing: ('/apply'+(kind?' · '+kind:'')).slice(0,40),
+      agree:true,
+    });
+  };
+}
+
+/* ══ 입력 검증 — 빚탈길과 같은 규칙 ══ */
+const PHONE_RE=/^(?:010\d{8}|01[16789]\d{7,8})$/;
+function fakePhone(d){
+  const body=d.slice(3);
+  if(/^(\d)\1+$/.test(body))            return '없는 번호예요. 실제 번호를 입력해 주세요';
+  if(/^(\d{4})\1$/.test(body))          return '없는 번호예요. 실제 번호를 입력해 주세요';
+  const seq='0123456789', rev='9876543210';
+  if(seq.includes(body)||rev.includes(body)) return '없는 번호예요. 실제 번호를 입력해 주세요';
+  return '';
+}
+const NAME_RE=/^(?:[가-힣]{2,}|[A-Za-z][A-Za-z\s.]{1,})$/;
+const fmtPhone=v=>{const d=digits(v).slice(0,11);
+  if(d.length<4)return d;
+  if(d.length<8)return d.slice(0,3)+'-'+d.slice(3);
+  return d.slice(0,3)+'-'+d.slice(3,d.length-4)+'-'+d.slice(d.length-4);};
+function fieldMsg(input,text){
+  const box=input.closest('.fi'); if(!box)return;
+  let m=box.querySelector('.msg');
+  if(!m){m=el('<p class="msg"></p>'); box.appendChild(m);}
+  m.textContent=text||'';
+  box.classList.toggle('bad',!!text);
+  box.classList.toggle('ok',!text&&!!input.value.trim());
+}
+function wireForm(form){
+  const n=form.querySelector('[name=name]'), t=form.querySelector('[name=phone]'),
+        a=form.querySelector('[name=agree]'), btn=form.querySelector('button[type=submit]');
+  const okName=()=>NAME_RE.test((n.value||'').trim());
+  const phoneMsg=()=>{const d=digits(t.value);
+    if(!PHONE_RE.test(d))return '휴대폰 번호 11자리를 확인해 주세요';
+    return fakePhone(d);};
+  const okPhone=()=>phoneMsg()==='';
+  const sync=()=>{ if(btn) btn.disabled=!(okName()&&okPhone()&&a.checked); };
+  n.addEventListener('input',()=>{ if(n.closest('.fi').classList.contains('bad'))
+    fieldMsg(n, okName()?'':'이름을 정확히 입력해 주세요'); sync(); });
+  n.addEventListener('blur',()=>{ if(n.value.trim())
+    fieldMsg(n, okName()?'':'이름을 정확히 입력해 주세요'); });
+  t.addEventListener('input',()=>{
+    const pos=t.selectionStart===t.value.length;
+    t.value=fmtPhone(t.value);
+    if(pos)t.setSelectionRange(t.value.length,t.value.length);
+    if(t.closest('.fi').classList.contains('bad')||digits(t.value).length>=11)
+      fieldMsg(t, phoneMsg());
+    sync(); });
+  t.addEventListener('blur',()=>{ if(t.value.trim()) fieldMsg(t, phoneMsg()); });
+  a.addEventListener('change',()=>{ a.closest('.agree').classList.toggle('bad',!a.checked); sync(); });
+  sync();
+  return ()=>{
+    let ok=true;
+    if(!okName()){fieldMsg(n,'이름을 정확히 입력해 주세요');ok=false;}
+    if(!okPhone()){fieldMsg(t,phoneMsg());ok=false;}
+    if(!a.checked){a.closest('.agree').classList.add('bad');ok=false;}
+    if(!ok)(form.querySelector('.fi.bad input')||a).focus();
+    return ok;
+  };
+}
+
+/* ══ 접수 — 성공했을 때만 완료 화면으로 보낸다 ══
+   실패했는데 접수됐다고 말하면 오지 않을 전화를 기다리게 된다 */
+function recentlySent(phone){
+  try{
+    const k='hy_lp_sent_'+phone, last=+(localStorage.getItem(k)||0);
+    if(Date.now()-last < 60*1000) return true;
+    localStorage.setItem(k, String(Date.now()));
+  }catch(e){}
+  return false;
+}
+async function submitLead(form, payload){
+  const btn=form.querySelector('button[type=submit]');
+  const label=btn.textContent;
+  let err=form.querySelector('.formerr');
+  if(!err){ err=el('<p class="formerr fine" role="alert" style="text-align:left"></p>'); form.appendChild(err); }
+  err.textContent='';
+  if(recentlySent(payload.phone)){ markSent(); go('#/done'); return; }
+  btn.disabled=true; btn.textContent='보내는 중…';
+  try{
+    const r=await fetch('/api/consult',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({...payload, elapsed:Date.now()-PAGE_AT})});
+    if(!r.ok) throw new Error('consult '+r.status);
+    markSent(); go('#/done');
+  }catch(e){
+    try{localStorage.removeItem('hy_lp_sent_'+payload.phone);}catch(_){}
+    btn.disabled=false; btn.textContent=label;
+    err.textContent='전송에 실패했어요. 잠시 후 다시 시도하시거나 '+TEL+' 로 전화 주세요.';
+    err.style.color='var(--warn)';
+    console.error('lead submit failed:', e.message);
+  }
+}
+function markSent(){try{sessionStorage.setItem('hy_lp_sent','1')}catch(e){}}
+
+/* ══ 히어로 자동 재생 ══
+   두 문항을 스스로 풀고 접수 장면으로 끝난다. 아무 선택지나 누르면 즉시 멈추고
+   그 답이 1번 문항의 답이 되어 문항은 2번부터 시작한다 */
+const HERO_ANS=[1,0];
+function initHeroDemo(){
+  const card=document.getElementById('hq1'); if(!card)return;
+  const opts=[...card.querySelectorAll('.q1o')];
+  const $=id=>document.getElementById(id);
+  let timers=[], live=true, running=false, curQ=0;
+  const gone=()=>!card.isConnected;
+  const clear=()=>{timers.forEach(clearTimeout);timers=[];};
+  const at=(ms,fn)=>timers.push(setTimeout(()=>{
+    if(gone()){live=false;running=false;clear();return;}
+    fn();
+  },ms));
+  const showQ=qi=>{
+    curQ=qi;
+    $('hStep').textContent=(qi+1)+' / 3';
+    $('hQz').innerHTML=QS[qi].q;
+    opts.forEach((o,i)=>{ const t=QS[qi].o[i];
+      o.hidden=!t; o.classList.remove('on');
+      if(t)o.querySelector('.lb').textContent=t[0]; });
+  };
+  const scene=(inEl,outEl)=>{inEl.className='hscn in';outEl.className='hscn out';};
+  const finish=()=>{ $('hHd').textContent='접수'; $('hStep').textContent='3 / 3'; scene($('hR'),$('hQ')); };
+  const takeOver=i=>{
+    if(!live)return;
+    live=false; running=false; clear();
+    const q=curQ;
+    opts.forEach(o=>o.classList.remove('on'));
+    opts[i]&&opts[i].classList.add('on');
+    if(q===0){ try{sessionStorage.setItem('hy_lp_q0',String(i));}catch(e){} }
+    setTimeout(()=>go('#/q'),280);
+  };
+  opts.forEach((o,i)=>o.addEventListener('click',()=>takeOver(i)));
+  const STEP=RM?2600:1900, LEAD=RM?500:800, HOLD=RM?5200:3400;
+  function run(){
+    if(!live)return;
+    running=true; clear();
+    $('hHd').textContent='상담 신청';
+    scene($('hQ'),$('hR'));
+    showQ(0);                               /* 첫 문항은 즉시 — 빈 상자가 먼저 보이면 안 된다 */
+    let t=LEAD;
+    HERO_ANS.forEach((pick,qi)=>{
+      if(qi>0)at(t,()=>showQ(qi));
+      at(t+Math.round(STEP*.49),()=>{opts[pick]&&opts[pick].classList.add('on');});
+      t+=STEP;
+    });
+    at(t+120,finish);
+    at(t+HOLD,run);
+  }
+  run();
+  document.addEventListener('visibilitychange',()=>{
+    if(!live)return;
+    if(document.hidden){running=false;clear();}
+    else if(!running)run();
+  });
+}
+
+/* ══ 라우터 ══ */
+function go(h){ if(location.hash===h)render(); else location.hash=h; }
+function render(){
+  const key=(location.hash||'#/').replace('#','')||'/';
+  const m=document.getElementById('main');
+  const flow=key==='/q'||key==='/done';
+  document.getElementById('nav').style.display=flow?'none':'';
+  if(key==='/q'){
+    m.innerHTML=R.q();
+    qi=0; ans.length=0; onContact=false;
+    const h=(()=>{try{return sessionStorage.getItem('hy_lp_q0')}catch(e){return null}})();
+    if(h!==null&&QS[0].o[+h]){ans[0]=+h;qi=1;}
+    try{sessionStorage.removeItem('hy_lp_q0');}catch(e){}
+    renderQ();
+    document.getElementById('qBack').onclick=()=>{
+      if(onContact){renderQ();}
+      else if(qi===0)go('#/');
+      else {qi--;renderQ();}};
+  }else if(key==='/done'){
+    /* 접수하지 않고 주소로 들어오면 홈으로 — 완료 화면이 접수 증거처럼 읽히면 안 된다 */
+    if(!SENT()){ location.replace('#/'); return; }
+    m.innerHTML=R.done();
+  }else{
+    m.innerHTML=R.home();
+    initHeroDemo();
+  }
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',render);
+render();
+</script>
+</body>
+</html>
