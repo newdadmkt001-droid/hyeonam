@@ -2137,7 +2137,7 @@ summary::-webkit-details-marker { display: none; }
 .fab__tile--kakao .fab__ico { color: #FAE100; }
 /* 무료 자격진단 신청 — 시선 끄는 효과 (은은한 밝기 펄스 + 광택 스윕) */
 .fab__item--form {
-  background: linear-gradient(135deg, #EE3B2E 0%, #CC1B12 100%); color: #fff; flex: 1;
+  background: var(--cta); color: #fff; flex: 1;   /* 빨강→브랜드 그라디언트(2026-10-16). --cta 는 파일 끝 'CTA 강화' 블록 */
   position: relative; overflow: hidden;
   animation: fabPulse 2.2s ease-in-out infinite;
 }
