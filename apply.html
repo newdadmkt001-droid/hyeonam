@@ -269,15 +269,13 @@ function renderContact(){
   f.onsubmit=async e=>{e.preventDefault();
     if(!validate())return;
     const n=f.querySelector('[name=name]'), t=f.querySelector('[name=phone]');
-    const kind=ans[1]!=null?QS[1].o[ans[1]][1]:'';
-    /* 상담 분야는 API·시트에 칸이 없다. 시트 쪽 Apps Script 는 이 저장소 밖이라
-       고치지 않는다(남의 시트 스크립트를 덮어써 가동본을 날린 전례가 있다).
-       대신 유입페이지(landing) 칸에 붙여 보낸다 — 시트와 알림에 그대로 찍힌다 */
+    /* 상담 분야(2번 문항)는 보내지 않는다 — 어차피 통화로 확인하므로 구분할 필요가
+       없다는 운영 판단(2026-10-16). 문항은 레퍼런스 퍼널 형태 그대로 남겨 둔다 */
     submitLead(f,{
       name:n.value.trim(), phone:digits(t.value),
       debt: ans[0]!=null?QS[0].o[ans[0]][1]:'',
       time: CALLTIMES[ti][1],
-      landing: ('/apply'+(kind?' · '+kind:'')).slice(0,40),
+      landing: '/apply',
       agree:true,
     });
   };
