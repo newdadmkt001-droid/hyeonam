@@ -102,7 +102,17 @@ async function sendToSheet(data) {
 }
 
 /* =========================================================
-   접수 완료 팝업 (성공 시 화면 중앙에 표시)
+   접수 완료 → /상담완료 페이지로 이동
+   주소가 바뀌어야 스마트로그 '목표 URL' 전환으로 잡힌다(팝업은 주소가 그대로라 못 잡았다).
+   hy_done 표식이 있어야 완료 페이지가 열린다 — 주소로 바로 들어온 방문은 전환에서 빠진다.
+   ========================================================= */
+function goDone() {
+  try { sessionStorage.setItem('hy_done', '1'); } catch (e) {}
+  location.href = '/상담완료/?from=' + encodeURIComponent(formPage());
+}
+
+/* =========================================================
+   접수 완료 팝업 (예전 방식 — 지금은 goDone 이 대신한다)
    ========================================================= */
 function showSuccessPopup(desc) {
   document.querySelector('.spop')?.remove();
@@ -681,7 +691,7 @@ function initDock() {
       await sendToSheet({ name: name.value, phone: phone.value, debt: debt.value, agree: true, landing: formPage() });
       say('');
       form.reset();
-      showSuccessPopup('담당 변호사가 곧 연락드리겠습니다.');
+      goDone();
     } catch (err) {
       console.error(err);
       say('전송에 실패했습니다. 1668-5831 로 전화 주세요.');
@@ -760,7 +770,7 @@ function initForm() {
 
       if (result) result.textContent = '';
       form.reset();
-      showSuccessPopup('담당 변호사가 곧 연락드리겠습니다.');
+      goDone();
     } catch (err) {
       console.error(err);
       if (result) {
@@ -841,7 +851,7 @@ function initModal() {
       if (result) result.textContent = '';
       form.reset();
       close();
-      showSuccessPopup('담당 변호사가 곧 연락드리겠습니다.');
+      goDone();
     } catch (err) {
       if (result) { result.style.color = '#E2796A'; result.textContent = '접수 중 오류가 발생했습니다. 대표번호로 연락 부탁드립니다.'; }
     } finally {

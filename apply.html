@@ -353,13 +353,13 @@ async function submitLead(form, payload){
   let err=form.querySelector('.formerr');
   if(!err){ err=el('<p class="formerr fine" role="alert" style="text-align:left"></p>'); form.appendChild(err); }
   err.textContent='';
-  if(recentlySent(payload.phone)){ markSent(); go('#/done'); return; }
+  if(recentlySent(payload.phone)){ markSent(); goDone(); return; }
   btn.disabled=true; btn.textContent='보내는 중…';
   try{
     const r=await fetch('/api/consult',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({...payload, elapsed:Date.now()-PAGE_AT})});
     if(!r.ok) throw new Error('consult '+r.status);
-    markSent(); go('#/done');
+    markSent(); goDone();
   }catch(e){
     try{localStorage.removeItem('hy_lp_sent_'+payload.phone);}catch(_){}
     btn.disabled=false; btn.textContent=label;
@@ -369,6 +369,11 @@ async function submitLead(form, payload){
   }
 }
 function markSent(){try{sessionStorage.setItem('hy_lp_sent','1')}catch(e){}}
+/* 접수 성공 → /상담완료 로 이동. 해시(#/done)는 스마트로그가 못 보기 때문에 주소를 바꾼다 */
+function goDone(){
+  try{sessionStorage.setItem('hy_done','1')}catch(e){}
+  location.href='/상담완료/?from=apply';
+}
 
 /* ══ 히어로 자동 재생 ══
    두 문항을 스스로 풀고 접수 장면으로 끝난다. 아무 선택지나 누르면 즉시 멈추고

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>상담 신청 완료 | 법무법인 현암</title>
+<meta name="robots" content="noindex, nofollow" />
+<meta name="theme-color" content="#FFFFFF" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link rel="stylesheet" as="style" crossorigin
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+
+<script>
+/* 접수에 성공한 사람만 이 화면을 본다.
+   주소로 바로 들어오면 홈으로 보낸다 — 그래야 스마트로그 '목표 URL' 전환이 실제 접수 건수와 맞는다.
+   표식(hy_done)은 한 번 쓰고 지운다: 새로고침으로 전환이 두 번 잡히지 않게. */
+(function () {
+  var params = new URLSearchParams(location.search), ok = false;
+  try {
+    ok = sessionStorage.getItem('hy_done') === '1';
+    sessionStorage.removeItem('hy_done');
+  } catch (e) {
+    ok = params.has('from'); // 저장소를 못 쓰는 브라우저는 출발 표시로 대신 판단
+  }
+  window.HY_DONE_OK = ok;
+  if (!ok) location.replace('/');
+})();
+</script>
+
+<!-- Meta Pixel Code -->
+<script>
+if (window.HY_DONE_OK) {
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '2621327384989198');
+fbq('track', 'PageView');
+}
+</script>
+<!-- End Meta Pixel Code -->
+
+<style>
+:root{
+  --grad-a:#2E7F58; --grad-b:#1D4A7D;
+  --grad:linear-gradient(135deg,var(--grad-a) 0%,var(--grad-b) 100%);
+  --forest:#14392C; --accent-txt:#1B4A82;
+  --bg:#F2F6F4; --surface:#FFFFFF;
+  --text:#101413; --text-2:#4A524D; --text-3:#5E665F;
+  --line:rgba(16,30,22,.10); --line-strong:rgba(16,30,22,.18);
+  --card-shadow:0 22px 44px -20px rgba(16,40,28,.22);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,system-ui,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  background:var(--bg); color:var(--text); line-height:1.6; letter-spacing:-.01em;
+  word-break:keep-all; overflow-wrap:break-word;
+  min-height:100svh; display:flex; flex-direction:column; align-items:center;
+  padding:clamp(28px,6vw,64px) 16px calc(32px + env(safe-area-inset-bottom));
+}
+a{color:inherit;text-decoration:none}
+.top{width:100%;max-width:520px;display:flex;justify-content:center;margin-bottom:clamp(20px,4vw,32px)}
+.top img{height:34px;width:auto;display:block}
+
+.card{
+  width:100%; max-width:520px; background:var(--surface); border-radius:20px;
+  box-shadow:var(--card-shadow); border:1px solid var(--line);
+  padding:clamp(32px,6vw,48px) clamp(22px,5vw,40px) clamp(28px,5vw,40px);
+}
+.head{text-align:center}
+.check{
+  width:68px;height:68px;border-radius:50%;background:var(--grad);
+  display:grid;place-items:center;margin:0 auto 22px;
+  box-shadow:0 14px 28px -12px rgba(29,74,125,.55);
+}
+.check svg{width:30px;height:30px}
+.check path{stroke-dasharray:30;stroke-dashoffset:30;animation:draw .5s .15s ease-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.check path{animation:none;stroke-dashoffset:0}}
+.kick{display:inline-block;font-size:13px;font-weight:700;color:var(--accent-txt);letter-spacing:.02em;margin-bottom:8px}
+h1{font-size:clamp(23px,5.6vw,28px);font-weight:800;line-height:1.35;letter-spacing:-.03em}
+.lead{margin-top:10px;font-size:16px;color:var(--text-2)}
+
+.steps{list-style:none;margin:30px 0 0;padding:24px 0 0;border-top:1px solid var(--line)}
+.steps li{position:relative;padding:0 0 22px 34px}
+.steps li:last-child{padding-bottom:0}
+.steps li::before{
+  content:"";position:absolute;left:5px;top:6px;width:12px;height:12px;border-radius:50%;
+  background:var(--grad);box-shadow:0 0 0 4px rgba(46,127,88,.12);
+}
+.steps li:not(:last-child)::after{
+  content:"";position:absolute;left:10px;top:24px;bottom:2px;width:2px;background:var(--line-strong);
+}
+.steps b{display:block;font-size:16px;font-weight:700;color:var(--text)}
+.steps p{margin-top:2px;font-size:14.5px;color:var(--text-2);line-height:1.6}
+.steps .when{display:inline-block;margin-top:8px;font-size:12.5px;font-weight:600;color:var(--forest);
+  background:rgba(46,127,88,.08);border-radius:6px;padding:3px 9px}
+
+.actions{display:grid;gap:10px;margin-top:30px}
+.btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  min-height:54px;border-radius:999px;font-size:16px;font-weight:700;letter-spacing:-.01em;
+  transition:transform .15s ease, box-shadow .2s ease;
+}
+.btn:active{transform:scale(.98)}
+.btn svg{width:18px;height:18px;flex:none}
+.btn--primary{background:var(--grad);color:#fff;box-shadow:0 12px 26px -14px rgba(29,74,125,.7)}
+.btn--kakao{background:#FEE500;color:#191919}
+.btn--ghost{background:transparent;color:var(--text-2);border:1px solid var(--line-strong);font-weight:600}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.legal{width:100%;max-width:520px;margin-top:18px;font-size:12.5px;color:var(--text-3);text-align:center}
+</style>
+</head>
+<body>
+<noscript><img height="1" width="1" style="display:none" alt=""
+src="https://www.facebook.com/tr?id=2621327384989198&ev=PageView&noscript=1" /></noscript>
+
+<header class="top">
+  <a href="/" aria-label="법무법인 현암 홈"><img src="/assets/img/logo.webp" alt="법무법인 현암" width="700" height="273" /></a>
+</header>
+
+<main class="card">
+  <div class="head">
+    <div class="check" aria-hidden="true">
+      <svg viewBox="0 0 40 40" fill="none"><path d="M11 20 l6 6 l12 -13" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <span class="kick">접수 완료</span>
+    <h1>상담 신청이 접수되었습니다</h1>
+    <p class="lead">담당 변호사가 곧 연락드리겠습니다.</p>
+  </div>
+
+  <ol class="steps" aria-label="앞으로의 진행">
+    <li><b>오늘 안에 전화</b>
+      <p>변호사가 직접 통화합니다. 지금 상황에서 가능한 방법을 여기서 확인합니다.</p>
+      <span class="when">평일 09–18시 · 접수는 당일</span></li>
+    <li><b>서류 안내 문자</b>
+      <p>소득·채무 서류 목록을 문자로 보냅니다. 모바일 촬영으로 제출하면 됩니다.</p>
+      <span class="when">통화 직후</span></li>
+    <li><b>법원 접수·진행</b>
+      <p>관할 법원 접수와 보정은 법무법인 현암이 대행합니다. 진행 상황은 문자로 안내합니다.</p>
+      <span class="when">서류 확보 후 1~2주</span></li>
+  </ol>
+
+  <div class="actions">
+    <a class="btn btn--primary" href="tel:1668-5831">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
+      급하시면 지금 전화 · 1668-5831
+    </a>
+    <div class="row">
+      <a class="btn btn--kakao" href="https://pf.kakao.com/_xbqUSX/chat" target="_blank" rel="noopener">카톡 상담</a>
+      <a class="btn btn--ghost" href="/">홈으로</a>
+    </div>
+  </div>
+</main>
+
+<p class="legal">사건마다 사정이 달라 같은 결과를 보장하지 않습니다.</p>
+
+<!-- Smartlog: 접수 성공 시에만 — '목표 URL /상담완료' 전환으로 집계 -->
+<script>
+if (window.HY_DONE_OK) {
+  var hpt_info={'_account':'UHPT-39242', '_server': 'a31'};
+  var s=document.createElement('script'); s.src='//cdn.smlog.co.kr/core/smart.js'; s.charset='utf-8';
+  document.body.appendChild(s);
+}
+</script>
+</body>
+</html>
